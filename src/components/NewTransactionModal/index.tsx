@@ -32,20 +32,30 @@ export function NewTransactionModal({
     "income"
   );
 
-  const [transaction, setTransaction] = useState<NewTransaction>({
-    date: "",
-    description: "",
-    amount: 0,
-    type: "income",
-    category: "",
-  });
+  const [transaction, setTransaction] = useState<NewTransaction>(
+    {} as NewTransaction
+  );
 
-  function handleCreateNewTransaction(event: React.FormEvent<HTMLFormElement>) {
+  async function handleCreateNewTransaction(
+    event: React.FormEvent<HTMLFormElement>
+  ) {
     // Impede que a página seja recarregada ao submeter o formulário
     event.preventDefault();
 
     // Cria a transaction no context
-    createTransaction(transaction);
+    await createTransaction(transaction);
+
+    // Fecha o modal
+    setTransaction({} as NewTransaction);
+    onClose();
+  }
+
+  function parseDateBRtoUS(date: string) {
+    const [day, month, year] = date.split("/");
+
+    if (date.length !== 10) return "";
+
+    return new Date(Number(year), Number(month) - 1, Number(day)).toISOString();
   }
 
   return (
@@ -66,7 +76,10 @@ export function NewTransactionModal({
           type="text"
           placeholder="Data"
           onChange={(event) =>
-            setTransaction({ ...transaction, date: event.target.value })
+            setTransaction({
+              ...transaction,
+              date: parseDateBRtoUS(event.target.value),
+            })
           }
         />
 

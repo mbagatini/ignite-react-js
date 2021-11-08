@@ -15,7 +15,7 @@ createServer({
       transactions: [
         {
           id: 1,
-          date: new Date("10-10-2021"),
+          date: new Date("2021-10-10"),
           description: "Luz",
           category: "Lazer",
           type: "outcome",
@@ -23,7 +23,7 @@ createServer({
         },
         {
           id: 2,
-          date: new Date("23-09-2021"),
+          date: new Date("2021-09-23"),
           description: "Impostos",
           category: "Gastos esporádicos",
           type: "outcome",
@@ -31,7 +31,7 @@ createServer({
         },
         {
           id: 3,
-          date: new Date("26-08-2021"),
+          date: new Date("2021-08-26"),
           description: "Cabelo",
           category: "Alimentação",
           type: "outcome",
@@ -39,7 +39,7 @@ createServer({
         },
         {
           id: 4,
-          date: new Date("03-11-2021"),
+          date: new Date("2021-11-03"),
           description: "Pet",
           category: "Gastos esporádicos",
           type: "income",
@@ -47,7 +47,7 @@ createServer({
         },
         {
           id: 5,
-          date: new Date("23-12-2020"),
+          date: new Date("2021-12-12"),
           description: "Lanche",
           category: "Saúde",
           type: "income",
@@ -55,7 +55,7 @@ createServer({
         },
         {
           id: 6,
-          date: new Date("26-08-2021"),
+          date: new Date("2021-08-26"),
           description: "Cabelo",
           category: "Receita",
           type: "income",
@@ -63,7 +63,7 @@ createServer({
         },
         {
           id: 7,
-          date: new Date("09-09-2021"),
+          date: new Date("2021-09-09"),
           description: "Carro",
           category: "Receita",
           type: "outcome",
@@ -71,7 +71,7 @@ createServer({
         },
         {
           id: 8,
-          date: new Date("05-03-2021"),
+          date: new Date("2021-03-05"),
           description: "Mercado",
           category: "Saúde",
           type: "income",
@@ -79,7 +79,7 @@ createServer({
         },
         {
           id: 9,
-          date: new Date("05-03-2021"),
+          date: new Date("2021-03-05"),
           description: "Aluguel",
           category: "Saúde",
           type: "outcome",
@@ -87,7 +87,7 @@ createServer({
         },
         {
           id: 10,
-          date: new Date("11-07-2021"),
+          date: new Date("2021-07-11"),
           description: "Mercado",
           category: "Alimentação",
           type: "outcome",
@@ -95,7 +95,7 @@ createServer({
         },
         {
           id: 11,
-          date: new Date("21-05-2021"),
+          date: new Date("2021-05-21"),
           description: "Cabelo",
           category: "Gastos pessoais",
           type: "outcome",
@@ -103,7 +103,7 @@ createServer({
         },
         {
           id: 12,
-          date: new Date("16-08-2021"),
+          date: new Date("2021-08-16"),
           description: "Comida",
           category: "Gastos pessoais",
           type: "outcome",
@@ -111,7 +111,7 @@ createServer({
         },
         {
           id: 13,
-          date: new Date("22-04-2021"),
+          date: new Date("2021-04-22"),
           description: "Lanche",
           category: "Transporte",
           type: "outcome",
@@ -119,7 +119,7 @@ createServer({
         },
         {
           id: 14,
-          date: new Date("25-01-2021"),
+          date: new Date("2021-01-25"),
           description: "Cabelo",
           category: "Lazer",
           type: "outcome",
@@ -127,7 +127,7 @@ createServer({
         },
         {
           id: 15,
-          date: new Date("23-05-2021"),
+          date: new Date("2021-05-23"),
           description: "Impostos",
           category: "Lazer",
           type: "outcome",
