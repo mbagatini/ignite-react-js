@@ -10,16 +10,29 @@ interface Transaction {
   type: "income" | "outcome";
 }
 
+type TransactionInput = Omit<Transaction, "id">;
+
 interface TransactionsContextProviderProps {
   children: ReactNode;
 }
 
-export const TransactionsContext = createContext<Transaction[]>([]);
+interface TransactionsContextData {
+  transactions: Transaction[];
+  createTransaction: (transaction: TransactionInput) => void;
+}
+
+export const TransactionsContext = createContext<TransactionsContextData>(
+  {} as TransactionsContextData
+);
 
 export function TransactionsProvider({
   children,
 }: TransactionsContextProviderProps) {
   const [transactions, setTransactions] = useState<Transaction[]>([]);
+
+  function createTransaction(transaction: TransactionInput) {
+    api.post("/transactions", transaction);
+  }
 
   useEffect(() => {
     api.get("transactions").then((response) => {
@@ -28,7 +41,8 @@ export function TransactionsProvider({
   }, []);
 
   return (
-    <TransactionsContext.Provider value={transactions}>
+    // value recebe as informações que estarão disponíveis para o context
+    <TransactionsContext.Provider value={{ transactions, createTransaction }}>
       {children}
     </TransactionsContext.Provider>
   );
