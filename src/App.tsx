@@ -1,8 +1,7 @@
 import { useState } from "react";
-import Modal from "react-modal";
-
 import { Dashboard } from "./components/Dashboard";
 import { Header } from "./components/Header";
+import { NewTransactionModal } from "./components/NewTransactionModal";
 import { GlobalStyle } from "./styles/global";
 
 export function App() {
@@ -17,21 +16,15 @@ export function App() {
     setIsTransactionModalOpened(false);
   }
 
-  // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
-  Modal.setAppElement("#root");
-
   return (
     <>
       <Header onOpenTransactionModal={handleOpenTransactionModal} />
       <Dashboard />
       <GlobalStyle />
-
-      <Modal
+      <NewTransactionModal
         isOpen={isTransactionModalOpened}
-        onRequestClose={handleCloseTransactionModal}
-      >
-        <h2>Cadastrar transação</h2>
-      </Modal>
+        onClose={handleCloseTransactionModal}
+      />
     </>
   );
 }
