@@ -32,9 +32,10 @@ export function NewTransactionModal({
     "income"
   );
 
-  const [transaction, setTransaction] = useState<NewTransaction>(
-    {} as NewTransaction
-  );
+  const [transaction, setTransaction] = useState<NewTransaction>({
+    type: "income",
+    date: new Intl.DateTimeFormat("pt-BR").format(new Date()),
+  } as NewTransaction);
 
   async function handleCreateNewTransaction(
     event: React.FormEvent<HTMLFormElement>
@@ -46,7 +47,10 @@ export function NewTransactionModal({
     await createTransaction(transaction);
 
     // Fecha o modal
-    setTransaction({} as NewTransaction);
+    setTransaction({
+      type: "income",
+      date: new Intl.DateTimeFormat("pt-BR").format(new Date()),
+    } as NewTransaction);
     onClose();
   }
 
@@ -75,6 +79,7 @@ export function NewTransactionModal({
         <input
           type="text"
           placeholder="Data"
+          defaultValue={transaction.date}
           onChange={(event) =>
             setTransaction({
               ...transaction,
@@ -112,7 +117,7 @@ export function NewTransactionModal({
               setTransactionType("income");
               setTransaction({
                 ...transaction,
-                type: "income",
+                type: transactionType,
               });
             }}
             isActive={transactionType === "income"}
@@ -128,7 +133,7 @@ export function NewTransactionModal({
               setTransactionType("outcome");
               setTransaction({
                 ...transaction,
-                type: "outcome",
+                type: transactionType,
               });
             }}
             isActive={transactionType === "outcome"}
