@@ -1,9 +1,9 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import Modal from "react-modal";
 import close from "../../assets/close.svg";
 import income from "../../assets/income.svg";
 import outcome from "../../assets/outcome.svg";
-import { api } from "../../services/api";
+import { TransactionsContext } from "../../TransactionsContext";
 import { Container, RadioBox, TransactionTypeContainer } from "./styles";
 
 // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
@@ -26,9 +26,12 @@ export function NewTransactionModal({
   isOpen,
   onClose,
 }: NewTransactionModalProps) {
+  const { createTransaction } = useContext(TransactionsContext);
+
   const [transactionType, setTransactionType] = useState<"income" | "outcome">(
     "income"
   );
+
   const [transaction, setTransaction] = useState<NewTransaction>({
     date: "",
     description: "",
@@ -40,9 +43,9 @@ export function NewTransactionModal({
   function handleCreateNewTransaction(event: React.FormEvent<HTMLFormElement>) {
     // Impede que a página seja recarregada ao submeter o formulário
     event.preventDefault();
-    console.log(transaction);
 
-    api.post("/transactions", transaction);
+    // Cria a transaction no context
+    createTransaction(transaction);
   }
 
   return (
