@@ -1,5 +1,11 @@
-import { createContext, ReactNode, useEffect, useState } from "react";
-import { api } from "./services/api";
+import {
+  createContext,
+  ReactNode,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
+import { api } from "../services/api";
 
 interface Transaction {
   id: string;
@@ -21,10 +27,16 @@ interface TransactionsContextData {
   createTransaction: (transaction: TransactionInput) => Promise<void>;
 }
 
-export const TransactionsContext = createContext<TransactionsContextData>(
+/**
+ * Context
+ */
+const TransactionsContext = createContext<TransactionsContextData>(
   {} as TransactionsContextData
 );
 
+/**
+ * Provider
+ */
 export function TransactionsProvider({
   children,
 }: TransactionsContextProviderProps) {
@@ -48,4 +60,19 @@ export function TransactionsProvider({
       {children}
     </TransactionsContext.Provider>
   );
+}
+
+/**
+ * Aqui o useContext vai ficar isolado, sendo acessado apenas por esse arquivo
+ */
+export function useTransactions() {
+  const context = useContext(TransactionsContext);
+
+  if (!context) {
+    throw new Error(
+      "useTransactions must be used within a TransactionsProvider"
+    );
+  }
+
+  return context;
 }

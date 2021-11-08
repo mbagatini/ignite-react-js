@@ -1,9 +1,9 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
 import Modal from "react-modal";
 import close from "../../assets/close.svg";
 import income from "../../assets/income.svg";
 import outcome from "../../assets/outcome.svg";
-import { TransactionsContext } from "../../TransactionsContext";
+import { useTransactions } from "../../hooks/useTransactions";
 import { Container, RadioBox, TransactionTypeContainer } from "./styles";
 
 // Make sure to bind modal to your appElement (https://reactcommunity.org/react-modal/accessibility/)
@@ -26,7 +26,7 @@ export function NewTransactionModal({
   isOpen,
   onClose,
 }: NewTransactionModalProps) {
-  const { createTransaction } = useContext(TransactionsContext);
+  const { createTransaction } = useTransactions();
 
   const [transactionType, setTransactionType] = useState<"income" | "outcome">(
     "income"
