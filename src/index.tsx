@@ -1,14 +1,18 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { createServer } from "miragejs";
+import { createServer, Model } from "miragejs";
 import { App } from "./App";
 
 createServer({
-  routes() {
-    this.namespace = "api";
+  // Banco de dados interno do mirage
+  models: {
+    transaction: Model,
+  },
 
-    this.get("/transactions", () => {
-      return [
+  // Seed do BD
+  seeds(server) {
+    server.db.loadData({
+      transactions: [
         {
           id: 1,
           date: "10/10/2021",
@@ -129,127 +133,23 @@ createServer({
           type: "outcome",
           amount: 14119,
         },
-        {
-          id: 16,
-          date: "29/10/2021",
-          description: "Roupa",
-          category: "Saúde",
-          type: "outcome",
-          amount: 1052,
-        },
-        {
-          id: 17,
-          date: "26/10/2021",
-          description: "Lanche",
-          category: "Gastos esporádicos",
-          type: "income",
-          amount: 3188,
-        },
-        {
-          id: 18,
-          date: "25/04/2021",
-          description: "Comida",
-          category: "Lazer",
-          type: "income",
-          amount: 18487,
-        },
-        {
-          id: 19,
-          date: "17/11/2020",
-          description: "Filhos",
-          category: "Transporte",
-          type: "income",
-          amount: 2545,
-        },
-        {
-          id: 20,
-          date: "22/08/2021",
-          description: "Estudos",
-          category: "Lazer",
-          type: "outcome",
-          amount: 24530,
-        },
-        {
-          id: 21,
-          date: "04/12/2020",
-          description: "Internet",
-          category: "Gastos esporádicos",
-          type: "outcome",
-          amount: 9954,
-        },
-        {
-          id: 22,
-          date: "14/08/2021",
-          description: "Roupa",
-          category: "Estudos",
-          type: "outcome",
-          amount: 20228,
-        },
-        {
-          id: 23,
-          date: "07/02/2021",
-          description: "Mercado",
-          category: "Alimentação",
-          type: "income",
-          amount: 29907,
-        },
-        {
-          id: 24,
-          date: "22/09/2021",
-          description: "Comida",
-          category: "Receita",
-          type: "outcome",
-          amount: 22902,
-        },
-        {
-          id: 25,
-          date: "11/08/2021",
-          description: "Estudos",
-          category: "Lazer",
-          type: "income",
-          amount: 14580,
-        },
-        {
-          id: 26,
-          date: "17/03/2021",
-          description: "Dividendos",
-          category: "Estudos",
-          type: "outcome",
-          amount: 7747,
-        },
-        {
-          id: 27,
-          date: "25/08/2021",
-          description: "Roupa",
-          category: "Gastos esporádicos",
-          type: "income",
-          amount: 1284,
-        },
-        {
-          id: 28,
-          date: "29/12/2020",
-          description: "Impostos",
-          category: "Saúde",
-          type: "income",
-          amount: 12034,
-        },
-        {
-          id: 29,
-          date: "04/12/2020",
-          description: "Carro",
-          category: "Estudos",
-          type: "income",
-          amount: 521,
-        },
-        {
-          id: 30,
-          date: "12/05/2021",
-          description: "Pet",
-          category: "Receita",
-          type: "outcome",
-          amount: 4977,
-        },
-      ];
+      ],
+    });
+  },
+
+  routes() {
+    this.namespace = "api";
+
+    this.get("/transactions", () => {
+      // Todas transações do mirage
+      return this.schema.all("transaction");
+    });
+
+    this.post("/transactions", (schema, request) => {
+      const body = JSON.parse(request.requestBody);
+
+      //   Insere a transação no BD do mirage
+      return schema.create("transaction", body);
     });
   },
 });
