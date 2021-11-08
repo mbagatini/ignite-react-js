@@ -17,7 +17,7 @@ export function Transactions() {
 
   useEffect(() => {
     api.get("transactions").then((response) => {
-      setTransactions(response.data);
+      setTransactions(response.data.transactions);
     });
   }, []);
 
@@ -36,10 +36,19 @@ export function Transactions() {
         <tbody>
           {transactions.map((transaction) => (
             <tr key={transaction.id}>
-              <td>{transaction.date}</td>
+              <td>
+                {new Intl.DateTimeFormat("pt-BR").format(
+                  new Date(transaction.date)
+                )}
+              </td>
               <td>{transaction.description}</td>
               <td>{transaction.category}</td>
-              <td>{`R$ ${transaction.amount}`}</td>
+              <td className={transaction.type}>
+                {new Intl.NumberFormat("pt-BR", {
+                  style: "currency",
+                  currency: "BRL",
+                }).format(transaction.amount)}
+              </td>
             </tr>
           ))}
         </tbody>
