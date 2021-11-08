@@ -8,15 +8,25 @@ import { Container } from "./styles";
 
 export function Summary() {
   const { transactions } = useContext(TransactionsContext);
-  var [incomeAmount, outcomeAmount] = [0, 0];
 
-  transactions.forEach((transaction) => {
-    if (transaction.type === "income") {
-      incomeAmount += transaction.amount;
-    } else {
-      outcomeAmount += transaction.amount;
+  const summary = transactions.reduce(
+    (accumulator, transaction) => {
+      if (transaction.type === "income") {
+        accumulator.income += transaction.amount;
+      } else {
+        accumulator.outcome += transaction.amount;
+      }
+
+      accumulator.total = accumulator.income - accumulator.outcome;
+
+      return accumulator;
+    },
+    {
+      income: 0,
+      outcome: 0,
+      total: 0,
     }
-  });
+  );
 
   return (
     <Container>
@@ -29,7 +39,7 @@ export function Summary() {
           {new Intl.NumberFormat("pt-BR", {
             style: "currency",
             currency: "BRL",
-          }).format(incomeAmount)}
+          }).format(summary.income)}
         </strong>
       </div>
       <div>
@@ -41,7 +51,7 @@ export function Summary() {
           {new Intl.NumberFormat("pt-BR", {
             style: "currency",
             currency: "BRL",
-          }).format(outcomeAmount * -1)}
+          }).format(summary.outcome * -1)}
         </strong>
       </div>
       <div className="total">
@@ -53,7 +63,7 @@ export function Summary() {
           {new Intl.NumberFormat("pt-BR", {
             style: "currency",
             currency: "BRL",
-          }).format(incomeAmount - outcomeAmount)}
+          }).format(summary.total)}
         </strong>
       </div>
     </Container>
