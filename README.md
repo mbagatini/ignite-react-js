@@ -40,4 +40,5 @@ Caso queira estudar mais sobre a **react-toastify**, dê uma olhada aqui
 
 ## Como deve ficar a aplicação ao final?
 
-[https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f166455c-a42f-4d25-8baa-a6686a3cb476/challenge.mp4](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f166455c-a42f-4d25-8baa-a6686a3cb476/challenge.mp4)
+[![image](https://user-images.githubusercontent.com/17517028/140976836-ef8cbd9c-578d-4ebe-b0d1-ad39f576aa23.png)](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/f166455c-a42f-4d25-8baa-a6686a3cb476/challenge.mp4)
+
