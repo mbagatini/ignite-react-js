@@ -7,10 +7,7 @@ import { useCart } from "../../hooks/useCart";
 
 const Header = (): JSX.Element => {
   const { cart } = useCart();
-
-  // Array com os ids dos produtos para contar a quantidade distinta de produtos
-  const idsProducts = cart.map((product) => product.id);
-  const cartSize = [...Array.from(new Set(idsProducts))].length;
+  const cartSize = cart.length;
 
   return (
     <Container>
