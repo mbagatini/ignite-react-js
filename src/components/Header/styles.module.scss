@@ -1,0 +1,56 @@
+.headerContainer {
+  height: 5rem;
+  border-bottom: 1px solid var(--gray-800);
+}
+
+.headerContent {
+  max-width: 1120px;
+  height: 5rem;
+  margin: 0 auto;
+  padding: 0 2rem;
+
+  display: flex;
+  align-items: center;
+
+  nav {
+    margin-left: 5rem;
+    height: 5rem; // Ocupa toda altura da div para colocar a borda depois
+
+    // Links
+    a {
+      display: inline-block;
+      position: relative;
+      padding: 0 0.5rem;
+      height: 5rem; // Ocupa toda altura
+      line-height: 5rem; // Toda altura para o texto ficar centralizado
+      color: var(--gray-300);
+
+      transition: color 0.2s;
+
+      & + a {
+        margin-left: 1rem;
+      }
+
+      &:hover {
+        color: var(--white);
+      }
+
+      &:active {
+        color: var(--white);
+        font-weight: 600;
+      }
+
+      // Bordinha amarela do selecionado
+      &.active::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        bottom: 1px;
+        width: 100%;
+        height: 3px;
+        border-radius: 3px 3px 0 0;
+        background: var(--yellow-500);
+      }
+    }
+  }
+}
