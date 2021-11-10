@@ -2,6 +2,8 @@
 
 Essa será uma aplicação já funcional onde o seu principal objetivo é realizar dois processos de migração: de Javascript para Typescript e de Class Components para Function Components.
 
+O projeto atual está em com Javascript e Class Components.
+
 ### Fake API com JSON Server
 
 Assim como utilizamos o MirageJS no módulo 2 para simular uma API com os dados das transações da aplicação dt.money, vamos utilizar o JSON Server para simular uma API que possui as informações das comidas. 
@@ -21,5 +23,4 @@ Dessa forma, basta consumir essas rotas da API normalmente com o Axios. Caso que
 
 ## Como deve ficar a aplicação ao final?
 
-[![restaurant]()](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d7d94fcf-b6af-40eb-a215-731ac274e475/Peek_2021-03-10_10-43.mp4)
-
+[![restaurant](https://user-images.githubusercontent.com/17517028/141106954-f91e59e8-b7ee-43ec-9c39-2427abdd9668.png)](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d7d94fcf-b6af-40eb-a215-731ac274e475/Peek_2021-03-10_10-43.mp4)
