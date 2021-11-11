@@ -1,5 +1,6 @@
 import type { NextPage } from "next";
 import Head from "next/head";
+import { SubscribeButton } from "../components/SubscribeButton";
 
 import styles from "./index.module.scss";
 
@@ -21,7 +22,7 @@ const Home: NextPage = () => {
             <span className={styles.attention}>for $9.90 month</span>
           </p>
 
-          <button type="button">Subscribe now</button>
+          <SubscribeButton />
         </section>
 
         <img src="/images/avatar.svg" alt="Girl coding" />
