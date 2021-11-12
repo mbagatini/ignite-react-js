@@ -1,4 +1,4 @@
-import type { GetServerSideProps, InferGetServerSidePropsType } from "next";
+import type { GetStaticProps } from "next";
 import Head from "next/head";
 import { stripe } from "../services/stripe";
 import { SubscribeButton } from "../components/SubscribeButton";
@@ -39,7 +39,7 @@ export default function Home({ product }: HomeProps) {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async () => {
+export const getStaticProps: GetStaticProps = async () => {
   // Busca o produto da API
   const price = await stripe.prices.retrieve("price_1JublPDJkjQsgFuZ2SYNF1nF");
 
@@ -56,5 +56,11 @@ export const getServerSideProps: GetServerSideProps = async () => {
     props: {
       product,
     },
+    /**
+     * revalidate: false
+     * An optional amount in seconds after which a page re-generation can occur. Defaults to false.
+     * When revalidate is false it means that there is no revalidation, so the page will be cached as
+     * built until your next build. More on Incremental Static Regeneration
+     */
   };
 };
