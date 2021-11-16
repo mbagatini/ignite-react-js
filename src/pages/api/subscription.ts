@@ -1,6 +1,17 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { getSession } from "next-auth/client";
 import { stripe } from "../../services/stripe";
+import { fauna as faunaClient } from "../../services/fauna";
+import { query as q } from "faunadb";
+
+type User = {
+  ref: string;
+  data: {
+    name: string;
+    email: string;
+    stripe_customer_id: string;
+  };
+};
 
 export default async function subscribe(
   req: NextApiRequest,
@@ -19,15 +30,56 @@ export default async function subscribe(
     return;
   }
 
+  const { name, email } = session.user;
+
+  if (!email) {
+    res.status(401).end("User e-mail not registered");
+    return;
+  }
+
+  // Salva no Fauna o ID do usuário do Stripe, se não existir
+  const user = await faunaClient
+    .query<User>(q.Get(q.Match(q.Index("user_email"), q.Casefold(email))))
+    .catch((error) => {
+      console.error(error);
+      res.status(400).end("Error accessing Fauna");
+      return;
+    });
+
+  if (!user) {
+    res.status(400).end("User not registered");
+    return;
+  }
+
+  let stripeCustomerId = user.data.stripe_customer_id;
+
   // Cria o usuário no Stripe
-  const stripeCustomer = await stripe.customers.create({
-    email: session.user.email || "",
-    name: session.user.name || "",
-  });
+  if (!stripeCustomerId) {
+    try {
+      const stripeCustomer = await stripe.customers.create({
+        email: email || "",
+        name: name || "",
+      });
+
+      stripeCustomerId = stripeCustomer.id;
+
+      await faunaClient
+        .query(
+          q.Update(user.ref, {
+            data: { stripe_customer_id: stripeCustomer.id },
+          })
+        )
+        .then((ret) => console.log(ret));
+    } catch (error) {
+      console.error(error);
+      res.status(400).end("Error creating customer on Stripe");
+      return;
+    }
+  }
 
   // Cria o plano no Stripe
   const stripeCheckoutSession = await stripe.checkout.sessions.create({
-    customer: stripeCustomer.id,
+    customer: stripeCustomerId,
     payment_method_types: ["card"],
     billing_address_collection: "required",
     line_items: [{ price: req.body.priceId, quantity: 1 }],
