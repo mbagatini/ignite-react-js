@@ -3,59 +3,46 @@ import { getSession } from "next-auth/client";
 import { stripe } from "../../services/stripe";
 import { fauna as faunaClient } from "../../services/fauna";
 import { query as q } from "faunadb";
-
-type User = {
-  ref: string;
-  data: {
-    name: string;
-    email: string;
-    stripe_customer_id: string;
-  };
-};
+import { User } from "../../types/user";
 
 export default async function subscribe(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
   if (req.method !== "POST") {
-    res.status(405).setHeader("Allow", "POST").end("Method not allowed");
-    return;
+    return res.status(405).setHeader("Allow", "POST").end("Method not allowed");
   }
 
   // Pegar os dados do usuário da sessão
   const session = await getSession({ req });
 
   if (!session?.user) {
-    res.status(401).end("User not authenticated");
-    return;
+    return res.status(401).end("User not authenticated");
   }
 
   const { name, email } = session.user;
 
   if (!email) {
-    res.status(401).end("User e-mail not registered");
-    return;
+    return res.status(401).end("User e-mail not registered");
   }
 
-  // Salva no Fauna o ID do usuário do Stripe, se não existir
+  // Busca o usuário no Fauna
   const user = await faunaClient
     .query<User>(q.Get(q.Match(q.Index("user_email"), q.Casefold(email))))
     .catch((error) => {
-      console.error(error);
-      res.status(400).end("Error accessing Fauna");
-      return;
+      return res.status(400).send(`Error accessing Fauna: ${error}`);
     });
 
   if (!user) {
-    res.status(400).end("User not registered");
-    return;
+    return res.status(400).end("User not registered");
   }
 
   let stripeCustomerId = user.data.stripe_customer_id;
 
-  // Cria o usuário no Stripe
+  // Salva no Fauna o ID do usuário do Stripe, se não existir
   if (!stripeCustomerId) {
     try {
+      // Cria o usuário no Stripe
       const stripeCustomer = await stripe.customers.create({
         email: email || "",
         name: name || "",
@@ -71,9 +58,7 @@ export default async function subscribe(
         )
         .then((ret) => console.log(ret));
     } catch (error) {
-      console.error(error);
-      res.status(400).end("Error creating customer on Stripe");
-      return;
+      return res.status(400).end(`Error creating customer: ${error}`);
     }
   }
 
