@@ -26,8 +26,17 @@ export const config = {
 
 /**
  * Eventos que devem ser escutados
+ *
+ * Desconsideramos o evento customer.subscription.create, pois quando ele é feito
+ * diretamente pelo Stripe, uma nova subscription é criada e o usuário fica com
+ * dados duplicados no Fauna
  */
-const relevantEvents = new Set(["checkout.session.completed"]);
+const relevantEvents = new Set([
+  "checkout.session.completed",
+  //"customer.subscription.created",
+  "customer.subscription.updated",
+  "customer.subscription.deleted",
+]);
 
 export default async function subscribe(
   req: NextApiRequest,
@@ -72,7 +81,21 @@ export default async function subscribe(
 
       await saveSubscription(
         String(checkoutSession.subscription || ""),
-        String(checkoutSession.customer || "")
+        String(checkoutSession.customer || ""),
+        true
+      );
+
+      break;
+
+    //case "customer.subscription.created":
+    case "customer.subscription.updated":
+    case "customer.subscription.deleted":
+      const subscription = event.data.object as Stripe.Subscription;
+
+      await saveSubscription(
+        String(subscription.id),
+        String(subscription.customer),
+        false //eventType === "customer.subscription.created"
       );
 
       break;
@@ -81,5 +104,5 @@ export default async function subscribe(
       return res.json({ error: "Webhook handler failed" });
   }
 
-  return res.status(200).end();
+  return res.status(200).json({ received: true });
 }
