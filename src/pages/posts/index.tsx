@@ -1,7 +1,9 @@
 import { GetStaticProps } from "next";
 import Head from "next/head";
+import Link from "next/link";
 import Prismic from "@prismicio/client";
-import { RichText, RichTextBlock } from "prismic-reactjs";
+import { RichText } from "prismic-dom";
+import { RichTextBlock } from "prismic-reactjs";
 
 import { Client } from "../../services/prismic";
 
@@ -28,11 +30,13 @@ export default function Posts({ posts }: PostsProps) {
       <main className={styles.container}>
         <div className={styles.posts}>
           {posts.map((post) => (
-            <a href={post.slug} key="#">
-              <time>{post.updatedAt}</time>
-              <strong>{post.title}</strong>
-              <p>{post.content}</p>
-            </a>
+            <Link href={`/posts/${post.slug}`} key={post.slug}>
+              <a href="#">
+                <time>{post.updatedAt}</time>
+                <strong>{post.title}</strong>
+                <p>{post.content}</p>
+              </a>
+            </Link>
           ))}
         </div>
       </main>
@@ -41,8 +45,7 @@ export default function Posts({ posts }: PostsProps) {
 }
 
 export const getStaticProps: GetStaticProps = async () => {
-  const client = Client();
-  const response = await client.query(
+  const response = await Client().query(
     Prismic.predicates.at("document.type", "post")
   );
 
@@ -50,17 +53,17 @@ export const getStaticProps: GetStaticProps = async () => {
     const date = new Date(post.last_publication_date || "");
 
     return {
-      updatedAt: new Intl.DateTimeFormat("pt-BR", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }).format(date),
       slug: post.uid,
       title: RichText.asText(post.data.title),
       content:
         post.data.content.find(
           (content: RichTextBlock) => content.type === "paragraph"
         )?.text ?? "",
+      updatedAt: new Intl.DateTimeFormat("pt-BR", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      }).format(date),
     };
   });
 
