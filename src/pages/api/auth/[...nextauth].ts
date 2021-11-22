@@ -17,6 +17,32 @@ export default NextAuth({
 
   // Callbacks are asynchronous functions you can use to control what happens when an action is performed.
   callbacks: {
+    async session(session) {
+      // Busca no Fauna a subscription do usuário e grava na sessão
+      const userActiveSubscription = await faunaClient
+        .query(
+          q.Get(
+            q.Intersection([
+              q.Match(
+                q.Index("subscription_user_id"),
+                q.Select(
+                  ["ref"],
+                  q.Get(
+                    q.Match(
+                      q.Index("user_email"),
+                      q.Casefold(session.user?.email || "")
+                    )
+                  )
+                )
+              ),
+              q.Match(q.Index("subscription_status"), "active"),
+            ])
+          )
+        )
+        .catch(() => null); // Em caso de notfound, retorna null
+
+      return { ...session, activeSubscription: userActiveSubscription };
+    },
     async signIn({ name, email }) {
       if (!email) {
         console.error("User email not found");
@@ -25,27 +51,24 @@ export default NextAuth({
 
       // Insere no Fauna os dados do usuário autenticado se o mesmo não existir. Sintaxe FQL
       try {
-        await faunaClient
-          .query(
-            q.If(
-              q.Not(
-                q.Exists(q.Match(q.Index("user_email"), q.Casefold(email)))
+        await faunaClient.query(
+          q.If(
+            q.Not(q.Exists(q.Match(q.Index("user_email"), q.Casefold(email)))),
+            q.Create(q.Collection("users"), {
+              data: { name, email },
+            }),
+            q.Update(
+              q.Select(
+                ["ref"],
+                q.Get(q.Match(q.Index("user_email"), q.Casefold(email)))
               ),
-              q.Create(q.Collection("users"), {
-                data: { name, email },
-              }),
-              q.Update(
-                q.Select(
-                  ["ref"],
-                  q.Get(q.Match(q.Index("user_email"), q.Casefold(email)))
-                ),
-                {
-                  data: { name },
-                }
-              )
+              {
+                data: { name },
+              }
             )
           )
-          .then((ret) => console.log(ret));
+        );
+        //   .then((ret) => console.log(ret));
       } catch (error) {
         console.error("Error AUTH: \n" + error);
         return false;
