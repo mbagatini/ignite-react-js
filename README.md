@@ -1,46 +1,19 @@
-# Getting Started with Create React App
+# 💻 Sobre o projeto
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+Essa é uma aplicação onde o seu principal objetivo é realizar o controle de receita e despesas. ELa é uma aplicação para controle pessoal financeiro. 
 
-## Available Scripts
+Através da interface é possível visualizar as transações de entrada e saída, onde cada transação possui uma descrição, valor, categoria e data de ocorrência. Além disso, é possível incluir novas transações.
 
-In the project directory, you can run:
+# Fake API
 
-### `yarn start`
+Para o controle e armazenamento dos dados da aplicação, foi utilizada a biblioteca Mirage JS. o Mirage JS é uma biblioteca JavaScript que permite simular APIs que podem ser usadas para construir, testar e compartilhar um aplicativo JavaScript full-stack. O que torna o Mirage JS único é sua capacidade de recriar cenários dinâmicos. 
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Ou seja, o Mirage JS permite que você construa uma API fake, que na prática seria fornecida pelo back-end, dessa forma o desenvolvimento do front-end pode ser desenvolvido sem depender do back-end.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+# 🎨 Layout da aplicação
 
-### `yarn test`
+O layout da aplicação foi desenvolvido pelo Tiago Luchtenberg, UI Designer da Rocketseat. O layout pode ser conferido no link abaixo, no Figma:
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+https://www.figma.com/file/0xmu9mj2TJYoIOubBFWsk5/dtmoney-Ignite-(Copy)?node-id=0%3A1
 
-### `yarn build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
-
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
-
-### `yarn eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+![image](https://user-images.githubusercontent.com/17517028/142927003-86b87100-d8d8-4521-8df6-4dc2144e431b.png)
