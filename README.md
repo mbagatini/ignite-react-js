@@ -1,34 +1,44 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# 💻 Sobre o projeto
 
-## Getting Started
+Essa é uma aplicação onde o seu principal objetivo é a construção de um blog, com controle de assinatura, preview de posts e todos controles de uma aplicação real.
 
-First, run the development server:
+O usuário pode se logar na aplicação através do login social, utilizando sua conta do Github.
 
-```bash
-npm run dev
-# or
-yarn dev
-```
+Para contruir a aplicação, foram utilizadas as seguintes ferramentas:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Next.js
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+O Next.js é um framework para React. O Next possui dois pontos principais em seu objetivo: tornar nossa aplicação React mais performática e a questão da indexação do conteúdo da página pelos motores de busca. Ele oferece diferenciais importantes para criar uma aplicação React ainda mais performática, facilitando a vida do desenvolvedor.
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+## SASS
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+O SASS é uma linguagem de extensão do CSS, a sigla significa “Syntactically Awesome Style Sheets” traduzindo ao pé da letra, folhas de estilo com uma sintaxe incrível. O SASS tem como objetivo tornar o processo de desenvolvimento mais simples e eficiente.
 
-## Learn More
+## Fauna DB
 
-To learn more about Next.js, take a look at the following resources:
+O Fauna é o banco de dados para aplicativos modernos que possibilita criar aplicacações com back-ends serverless (sem servidor). Combina a simplicidade do GraphQL com o poder e a consistência dos bancos de dados relacionais em uma API de dados sem servidor. Os desenvolvedores não precisam se preocupar com tarefas operacionais, como correção de dados, fragmentação, capacidade, resiliência ou escala.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Utilizamos o Fauna DB para armazenar os dados de controle para a aplicação.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
+## Prismic
 
-## Deploy on Vercel
+O Prismic é uma Headless CMS, ou seja, um sistema de gerenciamento de conteúdo. Um Headless CMSs irá prover uma interface tal como um CMS comum teria. Porém, a diferença primordial dele é que, no final, você não terá o Front End pronto. Você precisará desenvolver um que consuma o conteúdo que está no CMS. Assim, um Headless CMS não se preocupa em como o seu conteúdo ficará no final, ele se preocupa apenas em como o conteúdo estará estruturado.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Todos os posts da aplicação são gerenciados pelo Prismic.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+## Stripe
+
+A Stripe é uma das principais instituição de pagamento que gerenciam empresas atuantes na internet. Sua atuação está voltada para o desenvolvimento de ferramentas poderosas e flexíveis para o comércio online. No site oficial é possível explorar guias e exemplos de integração. O uso da plataforma de desenvolvimento da Stripe significa menos manutenção de sistemas legados e maior foco nas experiências do cliente e do produto essenciais.
+
+O Stripe foi utilizado para gerenciar a assinatura dos usuários.
+
+# 🎨 Layout da aplicação
+
+O layout da aplicação foi desenvolvido pelo Tiago Luchtenberg, UI Designer da Rocketseat. O layout pode ser conferido no link abaixo, no Figma:
+
+https://www.figma.com/file/gl0fHkQgvaUfXNjuwGtDDs/ig.news?node-id=1%3A3
+
+![image](https://user-images.githubusercontent.com/17517028/142932193-880f436b-3413-490a-ad8e-1eeaf5672202.png)
+
+
+
