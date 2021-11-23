@@ -1,3 +1,17 @@
+<img alt="Ignite" src="https://user-images.githubusercontent.com/17517028/143043650-2b13e5ca-8a59-497e-b6f8-ec5461492555.png" />
+
+<h3 align="center">
+  Desafio Blog
+</h3>
+
+<p align="center">
+  <a href="https://rocketseat.com.br">
+    <img alt="Made by Rocketseat" src="https://img.shields.io/badge/made%20by-Rocketseat-%2304D361">
+  </a>
+
+  <img alt="License" src="https://img.shields.io/badge/license-MIT-%2304D361">
+</p>
+
 # 💻 Sobre o desafio
 
 Nesse desafio, você deverá criar uma aplicação para treinar o que aprendeu até agora no ReactJS
@@ -14,3 +28,4 @@ Como você já deve ter visto nas aulas, o Prismic é uma Headless CMS. Vamos ut
 
 Para acessar o layout desenvolvido para a aplicação, clique aqui e acesse o [Figma](https://www.figma.com/file/WvJ7AXsu5iPvPmNzD9iyAP/Desafios-M%C3%B3dulo-3-ReactJS).
 
+https://user-images.githubusercontent.com/17517028/143042755-bca64a70-14b1-4cec-bfc7-1f1083bc1cfb.mp4
