@@ -32,13 +32,27 @@ A Stripe é uma das principais instituição de pagamento que gerenciam empresas
 
 O Stripe foi utilizado para gerenciar a assinatura dos usuários.
 
+# Como executar o projeto
+
+Depois de clonar o repositório da aplicação, execute o comando abaixo para que todas dependências sejam instaladas:
+
+```bash
+yarn install
+```
+
+Para iniciar a aplicação, execute:
+```bash
+yarn dev
+```
+
 # 🎨 Layout da aplicação
 
-O layout da aplicação foi desenvolvido pelo Tiago Luchtenberg, UI Designer da Rocketseat. O layout pode ser conferido no link abaixo, no Figma:
+O layout da aplicação foi desenvolvido pelo Tiago Luchtenberg, UI Designer da Rocketseat. O layout pode ser conferido no [Figma](https://www.figma.com/file/gl0fHkQgvaUfXNjuwGtDDs/ig.news?node-id=1%3A3).
 
-https://www.figma.com/file/gl0fHkQgvaUfXNjuwGtDDs/ig.news?node-id=1%3A3
+Confira a aplicação no vídeo abaixo:
 
-![image](https://user-images.githubusercontent.com/17517028/142932193-880f436b-3413-490a-ad8e-1eeaf5672202.png)
+[![image](https://user-images.githubusercontent.com/17517028/142932193-880f436b-3413-490a-ad8e-1eeaf5672202.png)](https://user-images.githubusercontent.com/17517028/143026052-b8f9f136-1cae-4fc2-ad82-7cc2f27333b1.mp4)
+
 
 
 
