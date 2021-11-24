@@ -1,1 +1,51 @@
-// TODO
+.banner {
+  position: relative;
+  height: 400px;
+}
+
+.post {
+  padding: 5rem 0;
+
+  h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--gray-100);
+  }
+
+  .info {
+    display: flex;
+    gap: 1.5rem;
+    color: var(--gray-300);
+    margin: 1.5rem 0 4rem;
+
+    span {
+      display: flex;
+      align-items: center;
+
+      svg {
+        margin-right: 0.5rem;
+      }
+    }
+  }
+}
+
+.postContent {
+  h2 {
+    font-size: 2.25rem;
+    font-weight: bold;
+    color: var(--gray-100);
+    padding: 2.25rem 0;
+  }
+
+  p,
+  span {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    text-align: justify;
+
+    & + p,
+    span {
+      margin-top: 1.5rem;
+    }
+  }
+}
