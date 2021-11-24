@@ -1,4 +1,5 @@
 import { GetStaticProps } from 'next';
+import Head from 'next/head';
 import Link from 'next/link';
 import Prismic from '@prismicio/client';
 import { format } from 'date-fns';
@@ -7,7 +8,6 @@ import { FiCalendar, FiUser } from 'react-icons/fi';
 
 import { getPrismicClient } from '../services/prismic';
 
-import Header from '../components/Header';
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 
@@ -33,12 +33,16 @@ interface HomeProps {
 export default function Home({ postsPagination }: HomeProps) {
   return (
     <>
-      <Header />
+      <Head>
+        <title>Posts | spacetreveling</title>
+      </Head>
       <main className={commonStyles.container}>
         {postsPagination.results.map(post => {
           return (
             <article key={post.uid} className={styles.post}>
-              <strong>{post.data.title}</strong>
+              <Link href={`/post/${post.uid}`}>
+                <a>{post.data.title}</a>
+              </Link>
               <p>{post.data.subtitle}</p>
               <div>
                 <span>
