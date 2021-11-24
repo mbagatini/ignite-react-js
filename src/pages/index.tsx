@@ -10,6 +10,7 @@ import { getPrismicClient } from '../services/prismic';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
+import { useState } from 'react';
 
 interface Post {
   uid?: string;
@@ -31,13 +32,31 @@ interface HomeProps {
 }
 
 export default function Home({ postsPagination }: HomeProps) {
+  const [nextPage, setNextPage] = useState<string>(postsPagination.next_page);
+  const [posts, setPosts] = useState<Post[]>(postsPagination.results);
+
+  async function handleLoadMorePosts(): Promise<void> {
+    /**
+     * Busca mais posts no Prismic
+     */
+    const newPostsPagination = await fetch(nextPage).then(response =>
+      response.json()
+    );
+
+    console.log(newPostsPagination);
+
+    setNextPage(newPostsPagination.next_page);
+    const newFormattedPosts = formatPosts(newPostsPagination.results);
+    setPosts([...posts, ...newFormattedPosts]);
+  }
+
   return (
     <>
       <Head>
         <title>Posts | spacetreveling</title>
       </Head>
       <main className={commonStyles.container}>
-        {postsPagination.results.map(post => {
+        {posts.map(post => {
           return (
             <div key={post.uid} className={styles.post}>
               <Link href={`/post/${post.uid}`}>
@@ -59,12 +78,10 @@ export default function Home({ postsPagination }: HomeProps) {
           );
         })}
 
-        {postsPagination.next_page && (
-          <div className={styles.nextPage}>
-            <Link href="/">
-              <a>Carregar mais posts</a>
-            </Link>
-          </div>
+        {nextPage && (
+          <button className={styles.nextPage} onClick={handleLoadMorePosts}>
+            Carregar mais posts
+          </button>
         )}
       </main>
     </>
@@ -73,14 +90,28 @@ export default function Home({ postsPagination }: HomeProps) {
 
 export const getStaticProps: GetStaticProps = async () => {
   const prismic = getPrismicClient();
-
   const postsResponse = await prismic.query(
-    Prismic.Predicates.at('document.type', 'post')
+    Prismic.Predicates.at('document.type', 'post'),
+    {
+      pageSize: 4,
+      orderings: '[document.last_publication_date]',
+    }
   );
 
-  // console.log(postsResponse);
+  const posts = formatPosts(postsResponse.results);
 
-  const posts = postsResponse.results.map(post => {
+  return {
+    props: {
+      postsPagination: {
+        next_page: postsResponse.next_page,
+        results: posts,
+      },
+    },
+  };
+};
+
+function formatPosts(posts: any[]): Post[] {
+  const formattedPosts = posts.map(post => {
     const postDate = new Date(post?.first_publication_date || '');
 
     return {
@@ -96,12 +127,5 @@ export const getStaticProps: GetStaticProps = async () => {
     };
   });
 
-  return {
-    props: {
-      postsPagination: {
-        next_page: postsResponse.next_page,
-        results: posts,
-      },
-    },
-  };
-};
+  return formattedPosts;
+}

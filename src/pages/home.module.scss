@@ -39,11 +39,10 @@
 }
 
 .nextPage {
-  padding: 4rem 0;
-
-  a {
-    color: var(--pink-500);
-    font-size: 1.125rem;
-    font-weight: bold;
-  }
+  border: none;
+  background: transparent;
+  margin: 4rem 0;
+  color: var(--pink-500);
+  font-size: 1.125rem;
+  font-weight: bold;
 }
