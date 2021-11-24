@@ -43,8 +43,6 @@ export default function Home({ postsPagination }: HomeProps) {
       response.json()
     );
 
-    console.log(newPostsPagination);
-
     setNextPage(newPostsPagination.next_page);
     const newFormattedPosts = formatPosts(newPostsPagination.results);
     setPosts([...posts, ...newFormattedPosts]);
