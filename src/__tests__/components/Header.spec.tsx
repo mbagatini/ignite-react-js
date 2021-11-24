@@ -1,16 +1,16 @@
 import { render, screen, fireEvent } from '@testing-library/react';
-import { RouterContext } from 'next/dist/next-server/lib/router-context';
+import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 import Header from '../../components/Header';
 
 const mockedPush = jest.fn();
-let RouterWrapper;
+let RouterWrapper: any;
 
 describe('Header', () => {
   beforeAll(() => {
     mockedPush.mockImplementation(() => Promise.resolve());
     const MockedRouterContext = RouterContext as React.Context<unknown>;
-    RouterWrapper = ({ children }): JSX.Element => {
+    RouterWrapper = ({ children }: any): JSX.Element => {
       return (
         <MockedRouterContext.Provider
           value={{

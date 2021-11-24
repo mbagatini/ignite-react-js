@@ -2,8 +2,6 @@ import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import Prismic from '@prismicio/client';
-import { format } from 'date-fns';
-import ptBR from 'date-fns/locale/pt-BR';
 import { FiCalendar, FiUser } from 'react-icons/fi';
 
 import { getPrismicClient } from '../services/prismic';
@@ -11,6 +9,7 @@ import { getPrismicClient } from '../services/prismic';
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
 import { useState } from 'react';
+import { formatDate } from '../utils';
 
 interface Post {
   uid?: string;
@@ -33,18 +32,39 @@ interface HomeProps {
 
 export default function Home({ postsPagination }: HomeProps) {
   const [nextPage, setNextPage] = useState<string>(postsPagination.next_page);
-  const [posts, setPosts] = useState<Post[]>(postsPagination.results);
+
+  /**
+   * Formata a data dos posts
+   */
+  const formattedPosts = postsPagination.results.map(post => {
+    return {
+      ...post,
+      first_publication_date: formatDate(post?.first_publication_date || ''),
+    };
+  });
+  const [posts, setPosts] = useState<Post[]>(formattedPosts);
 
   async function handleLoadMorePosts(): Promise<void> {
     /**
      * Busca mais posts no Prismic
      */
-    const newPostsPagination = await fetch(nextPage).then(response =>
-      response.json()
+    const newPostsPagination = await fetch(nextPage).then(response => {
+      return response.json();
+    });
+
+    const newFormattedPosts = formatPosts(newPostsPagination.results).map(
+      post => {
+        const postDate = new Date(post?.first_publication_date || '');
+        return {
+          ...post,
+          first_publication_date: formatDate(
+            post?.first_publication_date || ''
+          ),
+        };
+      }
     );
 
     setNextPage(newPostsPagination.next_page);
-    const newFormattedPosts = formatPosts(newPostsPagination.results);
     setPosts([...posts, ...newFormattedPosts]);
   }
 
@@ -110,13 +130,9 @@ export const getStaticProps: GetStaticProps = async () => {
 
 function formatPosts(posts: any[]): Post[] {
   const formattedPosts = posts.map(post => {
-    const postDate = new Date(post?.first_publication_date || '');
-
     return {
       uid: post.uid,
-      first_publication_date: format(postDate, 'dd MMM yyyy', {
-        locale: ptBR,
-      }),
+      first_publication_date: post?.first_publication_date,
       data: {
         title: post.data.title,
         subtitle: post.data.subtitle,

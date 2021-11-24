@@ -1,23 +1,23 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Image from 'next/image';
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 import Prismic from '@prismicio/client';
 import { RichText } from 'prismic-dom';
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
 
 import { getPrismicClient } from '../../services/prismic';
-import { format } from 'date-fns';
-import ptBR from 'date-fns/locale/pt-BR';
 
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
-import { useRouter } from 'next/router';
+import { formatDate } from '../../utils';
 
 interface Post {
-  estimatedTime: string;
+  uid: string;
   first_publication_date: string | null;
   data: {
     title: string;
+    subtitle: string;
     banner: {
       url: string;
     };
@@ -41,8 +41,21 @@ export default function Post({ post }: PostProps) {
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
   if (router.isFallback) {
-    return <div>Carregando, aguarde...</div>;
+    return <div>Carregando...</div>;
   }
+
+  const totalWords = post.data.content.reduce((acc: number, cur: any) => {
+    if (!acc) acc = 0;
+
+    acc += cur.heading?.match(/\S+/g)?.length || 0;
+
+    const body = RichText.asText(cur.body);
+    acc += body?.match(/\S+/g)?.length || 0;
+
+    return acc;
+  }, 0);
+
+  const estimatedTime = Math.ceil(totalWords / 200);
 
   return (
     <>
@@ -66,7 +79,7 @@ export default function Post({ post }: PostProps) {
           <div className={styles.info}>
             <span>
               <FiCalendar size={20} />
-              {post.first_publication_date}
+              {formatDate(post.first_publication_date || '')}
             </span>
             <span>
               <FiUser size={20} />
@@ -74,22 +87,21 @@ export default function Post({ post }: PostProps) {
             </span>
             <span>
               <FiClock size={20} />
-              {post.estimatedTime}
+              {`${estimatedTime} min`}
             </span>
           </div>
 
           <div className={styles.postContent}>
             {post.data.content.map((content, idx) => {
               return (
-                <div key={`c${idx}`}>
+                <section key={idx}>
                   {content.heading && <h2>{content.heading}</h2>}
-                  {content.body.map((body, idx) => (
-                    <div
-                      key={`b${idx}`}
-                      dangerouslySetInnerHTML={{ __html: body.text }}
-                    />
-                  ))}
-                </div>
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: RichText.asHtml(content.body),
+                    }}
+                  />
+                </section>
               );
             })}
           </div>
@@ -102,21 +114,21 @@ export default function Post({ post }: PostProps) {
 export const getStaticPaths: GetStaticPaths = async () => {
   const prismic = getPrismicClient();
 
-  // Busca os 10 posts mais recentes
   const posts = await prismic.query(
-    Prismic.Predicates.at('document.type', 'post'),
-    { pageSize: 10, page: 1, orderings: '[document.last_publication_date]' }
+    Prismic.Predicates.at('document.type', 'post')
   );
+
+  const paths = posts.results.map(post => {
+    return {
+      params: {
+        slug: post.uid,
+      },
+    };
+  });
 
   return {
     //posts para serem gerados na build
-    paths: posts.results.map(post => {
-      return {
-        params: {
-          slug: post.uid,
-        },
-      };
-    }),
+    paths,
     fallback: true,
   };
 };
@@ -131,26 +143,12 @@ export const getStaticProps: GetStaticProps = async context => {
   const prismic = getPrismicClient();
   const response = await prismic.getByUID('post', slug, {});
 
-  const postDate = new Date(response?.first_publication_date || '');
-
-  const totalWords = response.data.content.reduce((acc: number, cur: any) => {
-    if (!acc) acc = 0;
-
-    acc += cur.heading?.match(/\S+/g)?.length || 0;
-
-    const body = RichText.asText(cur.body);
-    acc += body?.match(/\S+/g)?.length || 0;
-
-    return acc;
-  }, 0);
-
   const post: Post = {
-    estimatedTime: `${Math.ceil(totalWords / 200)} min`,
-    first_publication_date: format(postDate, 'dd MMM yyyy', {
-      locale: ptBR,
-    }),
+    uid: response.uid || '',
+    first_publication_date: response?.first_publication_date,
     data: {
       title: response.data.title,
+      subtitle: response.data.subtitle,
       banner: {
         url: response.data.banner.url,
       },
@@ -158,7 +156,7 @@ export const getStaticProps: GetStaticProps = async context => {
       content: response.data.content.map((item: any) => {
         return {
           heading: item.heading,
-          body: [{ text: RichText.asHtml(item.body) }],
+          body: item.body,
         };
       }),
     },

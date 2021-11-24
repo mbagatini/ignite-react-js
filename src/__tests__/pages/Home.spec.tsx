@@ -1,7 +1,7 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { GetStaticPropsContext } from 'next';
 import { ParsedUrlQuery } from 'querystring';
-import { RouterContext } from 'next/dist/next-server/lib/router-context';
+import { RouterContext } from 'next/dist/shared/lib/router-context';
 
 import { getPrismicClient } from '../../services/prismic';
 import App, { getStaticProps } from '../../pages';
@@ -60,13 +60,13 @@ jest.mock('../../services/prismic');
 const mockedPrismic = getPrismicClient as jest.Mock;
 const mockedFetch = jest.spyOn(window, 'fetch') as jest.Mock;
 const mockedPush = jest.fn();
-let RouterWrapper;
+let RouterWrapper: any;
 
 describe('Home', () => {
   beforeAll(() => {
     mockedPush.mockImplementation(() => Promise.resolve());
     const MockedRouterContext = RouterContext as React.Context<unknown>;
-    RouterWrapper = ({ children }): JSX.Element => {
+    RouterWrapper = ({ children }: any): JSX.Element => {
       return (
         <MockedRouterContext.Provider
           value={{
@@ -204,7 +204,7 @@ describe('Home', () => {
 
   it('should not be able to load more posts if not available', async () => {
     const postsPagination = mockedQueryReturn;
-    postsPagination.next_page = null;
+    postsPagination.next_page = '';
 
     render(<App postsPagination={postsPagination} />);
 
