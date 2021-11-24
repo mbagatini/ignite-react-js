@@ -1,4 +1,5 @@
 import { GetStaticProps } from 'next';
+import Link from 'next/link';
 import Prismic from '@prismicio/client';
 import { format } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
@@ -52,6 +53,14 @@ export default function Home({ postsPagination }: HomeProps) {
             </article>
           );
         })}
+
+        {postsPagination.next_page && (
+          <div className={styles.nextPage}>
+            <Link href="/">
+              <a>Carregar mais posts</a>
+            </Link>
+          </div>
+        )}
       </main>
     </>
   );
@@ -63,6 +72,8 @@ export const getStaticProps: GetStaticProps = async () => {
   const postsResponse = await prismic.query(
     Prismic.Predicates.at('document.type', 'post')
   );
+
+  console.log(postsResponse);
 
   const posts = postsResponse.results.map(post => {
     const postDate = new Date(post?.first_publication_date || '');
