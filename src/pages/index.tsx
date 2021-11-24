@@ -39,11 +39,12 @@ export default function Home({ postsPagination }: HomeProps) {
       <main className={commonStyles.container}>
         {postsPagination.results.map(post => {
           return (
-            <article key={post.uid} className={styles.post}>
+            <div key={post.uid} className={styles.post}>
               <Link href={`/post/${post.uid}`}>
                 <a>{post.data.title}</a>
               </Link>
               <p>{post.data.subtitle}</p>
+
               <div>
                 <span>
                   <FiCalendar size={20} />
@@ -54,7 +55,7 @@ export default function Home({ postsPagination }: HomeProps) {
                   {post.data.author}
                 </span>
               </div>
-            </article>
+            </div>
           );
         })}
 
@@ -77,7 +78,7 @@ export const getStaticProps: GetStaticProps = async () => {
     Prismic.Predicates.at('document.type', 'post')
   );
 
-  console.log(postsResponse);
+  // console.log(postsResponse);
 
   const posts = postsResponse.results.map(post => {
     const postDate = new Date(post?.first_publication_date || '');

@@ -1,9 +1,14 @@
 .post {
-  strong {
+  a {
     font-size: 1.75rem;
     font-weight: bold;
     color: var(--gray-100);
     margin-bottom: 0.5rem;
+    transition: color 0.2s;
+
+    &:hover {
+      color: var(--pink-500);
+    }
   }
 
   p {
