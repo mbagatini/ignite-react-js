@@ -1,6 +1,7 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Image from 'next/image';
 import Head from 'next/head';
+import Prismic from '@prismicio/client';
 import { RichText } from 'prismic-dom';
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
 
@@ -10,6 +11,7 @@ import ptBR from 'date-fns/locale/pt-BR';
 
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
+import { useRouter } from 'next/router';
 
 interface Post {
   estimatedTime: string;
@@ -34,6 +36,14 @@ interface PostProps {
 }
 
 export default function Post({ post }: PostProps) {
+  const router = useRouter();
+
+  // If the page is not yet generated, this will be displayed
+  // initially until getStaticProps() finishes running
+  if (router.isFallback) {
+    return <div>Carregando, aguarde...</div>;
+  }
+
   return (
     <>
       <Head>
@@ -90,12 +100,24 @@ export default function Post({ post }: PostProps) {
 }
 
 export const getStaticPaths: GetStaticPaths = async () => {
-  // const prismic = getPrismicClient();
-  // const posts = await prismic.query(TODO);
+  const prismic = getPrismicClient();
+
+  // Busca os 10 posts mais recentes
+  const posts = await prismic.query(
+    Prismic.Predicates.at('document.type', 'post'),
+    { pageSize: 10, page: 1, orderings: '[document.last_publication_date]' }
+  );
 
   return {
-    paths: [], //posts para serem gerados na build
-    fallback: 'blocking',
+    //posts para serem gerados na build
+    paths: posts.results.map(post => {
+      return {
+        params: {
+          slug: post.uid,
+        },
+      };
+    }),
+    fallback: true,
   };
 };
 
