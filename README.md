@@ -24,6 +24,19 @@ Vamos nessa?
 
 Como você já deve ter visto nas aulas, o Prismic é uma Headless CMS. Vamos utilizá-lo para gerar documentos repetíveis (post) que vão retornar alguns dados para a aplicação. Nesse ponto, é muito importante que você siga **exatamente** a estrutura que vai ser apresentada aqui pois os testes **dependem** disso.
 
+# Como executar o projeto
+
+Depois de clonar o repositório da aplicação, execute o comando abaixo para que todas dependências sejam instaladas:
+
+```bash
+yarn install
+```
+
+Para iniciar a aplicação, execute:
+```bash
+yarn start
+```
+
 # Aplicação final
 
 Para acessar o layout desenvolvido para a aplicação, clique aqui e acesse o [Figma](https://www.figma.com/file/WvJ7AXsu5iPvPmNzD9iyAP/Desafios-M%C3%B3dulo-3-ReactJS).
