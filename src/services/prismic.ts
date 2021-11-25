@@ -17,8 +17,8 @@ export function getPrismicClient(req?: unknown): DefaultClient {
 // -- Link resolution rules
 // Manages the url links to internal Prismic documents
 export function linkResolver(doc: Document) {
-  if (doc.type === 'page') {
-    return `/${doc.uid}`;
+  if (doc.type === 'post') {
+    return `/post/${doc.uid}`;
   }
   return '/';
 }

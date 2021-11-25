@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Head from 'next/head';
 
-export function Custom404() {
+export default function Custom404() {
   return (
     <>
       <div>

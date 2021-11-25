@@ -1,17 +1,12 @@
 import { NextApiRequest, NextApiResponse } from 'next';
+import { getPrismicClient, linkResolver } from '../../services/prismic';
 
-import {
-  linkResolver,
-  getPrismicClient as Client,
-} from '../../services/prismic';
-
-export async function previewResolver(
+export default async (
   req: NextApiRequest,
   res: NextApiResponse
-) {
+): Promise<unknown> => {
   const { token: ref, documentId } = req.query;
-
-  const redirectUrl = await Client(req)
+  const redirectUrl = await getPrismicClient(req)
     .getPreviewResolver(String(ref), String(documentId))
     .resolve(linkResolver, '/');
 
@@ -28,4 +23,4 @@ export async function previewResolver(
   );
 
   res.end();
-}
+};

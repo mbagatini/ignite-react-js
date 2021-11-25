@@ -9,7 +9,7 @@ import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
 import { useUpdatePreview } from '../../hooks/useUpdatePreviewRef';
 import { getPrismicClient } from '../../services/prismic';
 import { Loader } from '../../components/Loader';
-import { Custom404 } from '../404';
+import Custom404 from '../404';
 
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
