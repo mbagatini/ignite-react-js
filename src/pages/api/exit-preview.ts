@@ -2,7 +2,7 @@ import { NextApiRequest, NextApiResponse } from 'next';
 
 const url = require('url');
 
-export async function exit(req: NextApiRequest, res: NextApiResponse) {
+export default async function exit(req: NextApiRequest, res: NextApiResponse) {
   // Exit the current user from "Preview Mode". This function accepts no args.
   res.clearPreviewData();
 
