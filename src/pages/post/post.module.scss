@@ -13,18 +13,27 @@
   }
 
   .info {
-    display: flex;
-    gap: 1.5rem;
-    color: var(--gray-300);
     margin: 1.5rem 0 4rem;
+    color: var(--gray-300);
 
-    span {
+    div {
       display: flex;
-      align-items: center;
+      gap: 1.5rem;
 
-      svg {
-        margin-right: 0.5rem;
+      span {
+        display: flex;
+        align-items: center;
+
+        svg {
+          margin-right: 0.5rem;
+        }
       }
+    }
+
+    p {
+      font-size: 0.875rem;
+      font-style: italic;
+      margin-top: 1rem;
     }
   }
 }

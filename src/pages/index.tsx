@@ -41,7 +41,10 @@ export default function Home({ postsPagination, preview }: HomeProps) {
   const formattedPosts = postsPagination.results.map(post => {
     return {
       ...post,
-      first_publication_date: formatDate(post?.first_publication_date || ''),
+      first_publication_date: formatDate(
+        post?.first_publication_date || '',
+        'dd MMM yyyy'
+      ),
     };
   });
   const [posts, setPosts] = useState<Post[]>(formattedPosts);
@@ -60,7 +63,8 @@ export default function Home({ postsPagination, preview }: HomeProps) {
         return {
           ...post,
           first_publication_date: formatDate(
-            post?.first_publication_date || ''
+            post?.first_publication_date || '',
+            'dd MMM yyyy'
           ),
         };
       }

@@ -18,6 +18,7 @@ import { formatDate } from '../../utils';
 interface Post {
   uid: string;
   first_publication_date: string | null;
+  last_publication_date: string | null;
   data: {
     title: string;
     subtitle: string;
@@ -68,6 +69,13 @@ export default function Post({ post, preview }: PostProps) {
   }, 0);
 
   const estimatedTime = Math.ceil(totalWords / 200);
+  const firstPublicationDate = formatDate(
+    post.first_publication_date || '',
+    'dd MMM yyyy'
+  );
+  const lastPublicationDate = post.last_publication_date
+    ? formatDate(post.last_publication_date, "dd MMM yyyy, 'às' k:mm")
+    : '';
 
   return (
     <>
@@ -89,18 +97,24 @@ export default function Post({ post, preview }: PostProps) {
           <h1>{post.data.title}</h1>
 
           <div className={styles.info}>
-            <span>
-              <FiCalendar size={20} />
-              {formatDate(post.first_publication_date || '')}
-            </span>
-            <span>
-              <FiUser size={20} />
-              {post.data.author}
-            </span>
-            <span>
-              <FiClock size={20} />
-              {`${estimatedTime} min`}
-            </span>
+            <div>
+              <span>
+                <FiCalendar size={20} />
+                {firstPublicationDate}
+              </span>
+              <span>
+                <FiUser size={20} />
+                {post.data.author}
+              </span>
+              <span>
+                <FiClock size={20} />
+                {`${estimatedTime} min`}
+              </span>
+            </div>
+
+            {post.last_publication_date && (
+              <p>{`* editado em ${lastPublicationDate}`}</p>
+            )}
           </div>
 
           <div className={styles.postContent}>
@@ -163,9 +177,14 @@ export const getStaticProps: GetStaticProps = async ({
     ref: previewData?.ref ?? null,
   });
 
+  console.log(response);
+
+  // Busca o post anterior e o próximo
+
   const post: Post = {
     uid: response.uid || '',
     first_publication_date: response?.first_publication_date,
+    last_publication_date: response?.last_publication_date,
     data: {
       title: response.data.title,
       subtitle: response.data.subtitle,
