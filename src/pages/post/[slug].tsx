@@ -6,11 +6,15 @@ import Prismic from '@prismicio/client';
 import { RichText } from 'prismic-dom';
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
 
+import { useUpdatePreview } from '../../hooks/useUpdatePreviewRef';
 import { getPrismicClient } from '../../services/prismic';
+import { Loader } from '../../components/Loader';
+import { Custom404 } from '../404';
 
 import commonStyles from '../../styles/common.module.scss';
 import styles from './post.module.scss';
 import { formatDate } from '../../utils';
+import { QueryOptions } from '@prismicio/client/types/ResolvedApi';
 
 interface Post {
   uid: string;
@@ -33,15 +37,24 @@ interface Post {
 
 interface PostProps {
   post: Post;
+  previewRef?: unknown;
 }
 
-export default function Post({ post }: PostProps) {
+export default function Post({ post, previewRef }: PostProps) {
   const router = useRouter();
 
   // If the page is not yet generated, this will be displayed
   // initially until getStaticProps() finishes running
+  // if (router.isFallback) {
+  //   return <div>Carregando...</div>;
+  // }
+
   if (router.isFallback) {
-    return <div>Carregando...</div>;
+    return <Loader />;
+  }
+
+  if (!post.uid) {
+    return <Custom404 />;
   }
 
   const totalWords = post.data.content.reduce((acc: number, cur: any) => {
@@ -56,6 +69,8 @@ export default function Post({ post }: PostProps) {
   }, 0);
 
   const estimatedTime = Math.ceil(totalWords / 200);
+
+  useUpdatePreview(previewRef, post.uid);
 
   return (
     <>
@@ -133,15 +148,21 @@ export const getStaticPaths: GetStaticPaths = async () => {
   };
 };
 
-export const getStaticProps: GetStaticProps = async context => {
-  const slug = context?.params?.slug as string;
+export const getStaticProps: GetStaticProps = async ({
+  params,
+  previewData,
+}) => {
+  const slug = params?.slug as string;
 
   if (!slug) {
     return { props: { post: {} as PostProps } };
   }
 
+  const previewRef = previewData ? previewData?.ref : null;
+  const refOption = previewRef ? { ref: previewRef } : ({} as QueryOptions);
+
   const prismic = getPrismicClient();
-  const response = await prismic.getByUID('post', slug, {});
+  const response = await prismic.getByUID('post', slug, refOption);
 
   const post: Post = {
     uid: response.uid || '',
@@ -162,5 +183,10 @@ export const getStaticProps: GetStaticProps = async context => {
     },
   };
 
-  return { props: { post } };
+  return {
+    props: {
+      post,
+      previewRef,
+    },
+  };
 };
