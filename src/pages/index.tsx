@@ -1,15 +1,16 @@
+import { useState } from 'react';
 import { GetStaticProps } from 'next';
 import Head from 'next/head';
 import Link from 'next/link';
 import Prismic from '@prismicio/client';
 import { FiCalendar, FiUser } from 'react-icons/fi';
 
+import { formatDate } from '../utils';
 import { getPrismicClient } from '../services/prismic';
+import ExitPreview from '../components/ExitPreview';
 
 import commonStyles from '../styles/common.module.scss';
 import styles from './home.module.scss';
-import { useState } from 'react';
-import { formatDate } from '../utils';
 
 interface Post {
   uid?: string;
@@ -28,9 +29,10 @@ interface PostPagination {
 
 interface HomeProps {
   postsPagination: PostPagination;
+  preview: boolean;
 }
 
-export default function Home({ postsPagination }: HomeProps) {
+export default function Home({ postsPagination, preview }: HomeProps) {
   const [nextPage, setNextPage] = useState<string>(postsPagination.next_page);
 
   /**
@@ -101,18 +103,24 @@ export default function Home({ postsPagination }: HomeProps) {
             Carregar mais posts
           </button>
         )}
+
+        {preview && <ExitPreview />}
       </main>
     </>
   );
 }
 
-export const getStaticProps: GetStaticProps = async () => {
+export const getStaticProps: GetStaticProps<HomeProps> = async ({
+  preview = false,
+  previewData,
+}) => {
   const prismic = getPrismicClient();
   const postsResponse = await prismic.query(
     Prismic.Predicates.at('document.type', 'post'),
     {
       pageSize: 4,
       orderings: '[document.last_publication_date]',
+      ref: previewData?.ref ?? null,
     }
   );
 
@@ -124,6 +132,7 @@ export const getStaticProps: GetStaticProps = async () => {
         next_page: postsResponse.next_page,
         results: posts,
       },
+      preview,
     },
   };
 };
