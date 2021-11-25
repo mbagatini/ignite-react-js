@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
+import Link from 'next/link';
 import Image from 'next/image';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
@@ -36,11 +37,13 @@ interface Post {
 }
 
 interface PostProps {
-  post: Post;
   preview: boolean;
+  post: Post;
+  nextPost: Post;
+  prevPost: Post;
 }
 
-export default function Post({ post, preview }: PostProps) {
+export default function Post({ post, preview, nextPost, prevPost }: PostProps) {
   const router = useRouter();
 
   // If the page is not yet generated, this will be displayed
@@ -131,10 +134,41 @@ export default function Post({ post, preview }: PostProps) {
               );
             })}
           </div>
-
-          {preview && <ExitPreview />}
         </article>
       </main>
+
+      <footer className={`${commonStyles.container} ${styles.postFooter}`}>
+        {(nextPost || prevPost) && (
+          <div className={styles.postPagination}>
+            <hr />
+            <div className={styles.postLinks}>
+              <div>
+                {nextPost && (
+                  <>
+                    <p>{nextPost.data.title}</p>
+                    <Link href={`/post/${nextPost.uid}`}>
+                      <a>Post anterior</a>
+                    </Link>
+                  </>
+                )}
+              </div>
+
+              <div>
+                {prevPost && (
+                  <>
+                    <p>{prevPost.data.title}</p>
+                    <Link href={`/post/${prevPost.uid}`}>
+                      <a>Próximo post</a>
+                    </Link>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {preview && <ExitPreview />}
+      </footer>
     </>
   );
 }
@@ -177,9 +211,28 @@ export const getStaticProps: GetStaticProps = async ({
     ref: previewData?.ref ?? null,
   });
 
-  console.log(response);
+  // Próximo post
+  const nextResponse = await prismic.query(
+    Prismic.Predicates.at('document.type', 'post'),
+    {
+      pageSize: 1,
+      after: response.id,
+      orderings: '[document.first_publication_date desc]',
+    }
+  );
 
-  // Busca o post anterior e o próximo
+  // Post anterior
+  const prevResponse = await prismic.query(
+    Prismic.Predicates.at('document.type', 'post'),
+    {
+      pageSize: 1,
+      after: response.id,
+      orderings: '[document.first_publication_date]',
+    }
+  );
+
+  const nextPost = nextResponse?.results[0] ?? null;
+  const prevPost = prevResponse?.results[0] ?? null;
 
   const post: Post = {
     uid: response.uid || '',
@@ -203,8 +256,10 @@ export const getStaticProps: GetStaticProps = async ({
 
   return {
     props: {
-      post,
       preview,
+      post,
+      nextPost,
+      prevPost,
     },
   };
 };

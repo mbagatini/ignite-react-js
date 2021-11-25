@@ -4,7 +4,7 @@
 }
 
 .post {
-  margin-top: 5rem;
+  margin: 5rem auto;
 
   h1 {
     font-size: 3rem;
@@ -60,5 +60,39 @@
 
   a {
     color: var(--pink-500);
+  }
+}
+
+.postFooter {
+  margin-bottom: 5rem;
+}
+
+.postPagination {
+  hr {
+    border: 1px solid var(--gray-300);
+    opacity: 0.1;
+    margin-bottom: 3rem;
+  }
+
+  .postLinks {
+    display: flex;
+    justify-content: space-between;
+
+    div {
+      p {
+        color: var(--gray-100);
+        font-size: 1.125rem;
+        padding-bottom: 0.5rem;
+      }
+
+      a {
+        color: var(--pink-500);
+        font-weight: 600;
+      }
+
+      &:nth-child(2) {
+        text-align: right;
+      }
+    }
   }
 }
