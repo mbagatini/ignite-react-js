@@ -9,6 +9,7 @@ import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
 
 import { getPrismicClient } from '../../services/prismic';
 import { Loader } from '../../components/Loader';
+import Comments from '../../components/Comments';
 import ExitPreview from '../../components/ExitPreview';
 import Custom404 from '../404';
 
@@ -166,6 +167,8 @@ export default function Post({ post, preview, nextPost, prevPost }: PostProps) {
             </div>
           </div>
         )}
+
+        <Comments slug={post.uid} />
 
         {preview && <ExitPreview />}
       </footer>
