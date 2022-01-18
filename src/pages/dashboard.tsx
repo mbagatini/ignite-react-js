@@ -7,9 +7,9 @@ import { Sidebar } from "../components/Sidebar";
 // Importação do componente que só deve ser importando quando estivermos no lado do browser
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
-function getDate(add: number) {
+function getDate(addDays: number) {
   var date = new Date();
-  date.setDate(date.getDate() + add);
+  date.setDate(date.getDate() + addDays);
   return date.toISOString();
 }
 
