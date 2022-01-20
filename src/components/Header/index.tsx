@@ -1,10 +1,14 @@
-import { Flex, useBreakpointValue } from "@chakra-ui/react";
+import { Flex, IconButton, Icon, useBreakpointValue } from "@chakra-ui/react";
+import { RiMenuLine } from "react-icons/ri";
+import { useSidebarDrawer } from "../../hooks/useSidebarDrawer";
 import { Logo } from "./Logo";
 import { Notifications } from "./Notifications";
 import { Profile } from "./Profile";
 import { Search } from "./Search";
 
 export function Header() {
+  const { onOpen } = useSidebarDrawer();
+
   const isLarge = useBreakpointValue({
     base: false,
     lg: true,
@@ -21,6 +25,18 @@ export function Header() {
       px="6"
       align="center"
     >
+      {/* Botão para abrir o menu */}
+      {!isLarge && (
+        <IconButton
+          icon={<Icon as={RiMenuLine} />}
+          fontSize="24"
+          variant="unstyled"
+          aria-label="Open menu"
+          onClick={onOpen}
+          mr="2"
+        ></IconButton>
+      )}
+
       <Logo />
       {isLarge && <Search />}
 
