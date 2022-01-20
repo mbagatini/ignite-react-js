@@ -1,4 +1,5 @@
 import { Box, Flex, SimpleGrid, VStack, Text, theme } from "@chakra-ui/react";
+import { ApexOptions } from "apexcharts";
 import dynamic from "next/dynamic";
 
 import { Header } from "../components/Header";
@@ -13,7 +14,7 @@ function getDate(addDays: number) {
   return date.toISOString();
 }
 
-const options = {
+const options: ApexOptions = {
   chart: {
     toolbar: {
       show: false,
@@ -71,11 +72,11 @@ export default function Dashboard() {
         <Sidebar />
 
         <SimpleGrid flex="1" gap="4" align="flex-start" minChildWidth={320}>
-          <Box p="8" pb="4" borderRadius={8} bg="gray.800">
+          <Box p={["6", "8"]} pb="4" borderRadius={8} bg="gray.800">
             <Text>Inscritos</Text>
             <Chart options={options} series={series} type="area" height={160} />
           </Box>
-          <Box p="8" borderRadius={8} bg="gray.800">
+          <Box p={["6", "8"]} borderRadius={8} bg="gray.800">
             <Text>Taxa</Text>
           </Box>
         </SimpleGrid>
