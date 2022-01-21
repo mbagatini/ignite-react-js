@@ -1,9 +1,22 @@
 import { Button, Flex, Stack } from "@chakra-ui/react";
 import type { NextPage } from "next";
+import { SubmitHandler, useForm } from "react-hook-form";
 
 import { Input } from "../components/Form/Input";
 
+type SignInFormData = {
+  email: string;
+  password: string;
+};
+
 const SignIn: NextPage = () => {
+  const { register, handleSubmit, watch, formState } =
+    useForm<SignInFormData>();
+
+  const handleSignIn: SubmitHandler<SignInFormData> = (inputs, event) => {
+    console.log(inputs);
+  };
+
   return (
     <Flex w="100vw" h="100vh" align="center" justify="center">
       <Flex
@@ -14,13 +27,20 @@ const SignIn: NextPage = () => {
         p="8"
         borderRadius={8}
         flexDir="column"
+        onSubmit={handleSubmit(handleSignIn)}
       >
         <Stack spacing="4">
-          <Input type="email" name="email" label="E-mail" />
-          <Input type="password" name="password" label="Password" />
+          <Input type="email" label="E-mail" {...register("email")} />
+          <Input type="password" label="Password" {...register("password")} />
         </Stack>
 
-        <Button type="submit" mt="6" colorScheme="pink" size="lg">
+        <Button
+          type="submit"
+          mt="6"
+          colorScheme="pink"
+          size="lg"
+          isLoading={formState.isSubmitting} // Efeito de carregamento
+        >
           Sign in
         </Button>
       </Flex>
