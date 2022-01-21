@@ -1,5 +1,5 @@
 import { useDisclosure, UseDisclosureReturn } from "@chakra-ui/react";
-import router from "next/router";
+import { useRouter } from "next/router";
 import { createContext, useContext, useEffect } from "react";
 
 interface SidebarDrawerProviderProps {
@@ -16,6 +16,7 @@ export function SidebarDrawerProvider({
   children,
 }: SidebarDrawerProviderProps) {
   const disclosure = useDisclosure();
+  const router = useRouter();
 
   // Fecha a sidebar toda vez que for ciclado em um item do menu
   useEffect(() => {
