@@ -20,7 +20,7 @@ const signInSchema = yup
   .required();
 
 const SignIn: NextPage = () => {
-  const { register, handleSubmit, watch, formState } = useForm<SignInFormData>({
+  const { register, handleSubmit, formState } = useForm<SignInFormData>({
     resolver: yupResolver(signInSchema),
   });
 
