@@ -37,7 +37,7 @@ export function Item({ image, title }: ItemProps) {
     >
       {isMediumScreen && <Image src={image} alt={title} />}
       {!isMediumScreen && <CircleIcon color="yellow.500" />}
-      <Text as="span" fontSize="2xl" fontWeight="semibold">
+      <Text as="span" fontSize={["lg", "2xl"]} fontWeight="semibold" minW={100}>
         {title}
       </Text>
     </Stack>

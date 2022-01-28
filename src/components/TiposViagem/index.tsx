@@ -7,7 +7,7 @@ export function TiposViagem() {
       w="100%"
       maxW={960}
       mx="auto"
-      py={20}
+      py={[10, 20]}
       px={6}
       wrap="wrap"
       justify="space-around"
