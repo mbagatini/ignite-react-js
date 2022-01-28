@@ -10,7 +10,7 @@ import {
 export function Banner() {
   const isLargeScreen = useBreakpointValue({
     base: false,
-    xl: true,
+    lg: true,
   });
 
   return (
