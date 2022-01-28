@@ -12,7 +12,7 @@ import { Slide } from "./Slide";
 
 export function Continentes() {
   return (
-    <Box maxW={960} h="100%" mx="auto" pb={8}>
+    <Box w="100%" maxW={960} h="100%" mx="auto" pb={8}>
       <Swiper
         modules={[Navigation, Pagination, Scrollbar]}
         spaceBetween={0}

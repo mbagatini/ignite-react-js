@@ -8,7 +8,7 @@ interface SlideProps {
 
 export function Slide({ image, title, subtitle }: SlideProps) {
   return (
-    <Flex h={450} direction="column" align="center" justify="center">
+    <Flex h={[250, 450]} direction="column" align="center" justify="center">
       <Image
         src={image}
         alt={title}
@@ -16,10 +16,10 @@ export function Slide({ image, title, subtitle }: SlideProps) {
         zIndex="-1"
         filter="brightness(0.35)"
       />
-      <Text fontSize="5xl" fontWeight="medium" color="white" mb={4}>
+      <Text fontSize={["2xl", "5xl"]} fontWeight="medium" color="white" mb={4}>
         {title}
       </Text>
-      <Text fontSize="2xl" fontWeight="medium" color="white">
+      <Text fontSize={["sm", "2xl"]} fontWeight="medium" color="white">
         {subtitle}
       </Text>
     </Flex>
