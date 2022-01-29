@@ -4,7 +4,7 @@ import { Divider, VStack, Text, Box } from "@chakra-ui/react";
 import { BannerHome } from "../components/BannerHome";
 import { Header } from "../components/Header";
 import { TiposViagem } from "../components/TiposViagem";
-import { Continentes } from "../components/Continentes";
+import { SliderContinentes } from "../components/SliderContinentes";
 
 const Home: NextPage = () => {
   return (
@@ -25,7 +25,7 @@ const Home: NextPage = () => {
         <Text>Então escolha seu continente</Text>
       </Box>
 
-      <Continentes />
+      <SliderContinentes />
     </VStack>
   );
 };
