@@ -14,7 +14,7 @@ export function BannerHome() {
   });
 
   return (
-    <Box w="100%" h={335} bgImage="Background.png" p={6}>
+    <Box w="100%" h={335} bgImage="Background.png" p={8}>
       <Flex h="100%" direction="row" maxW={960} mx="auto" position="relative">
         <VStack maxW={524} spacing={5} my="auto" align="flex-start">
           <Text fontWeight="medium" fontSize={["xl", "4xl"]} color="gray.50">
