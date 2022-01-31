@@ -67,11 +67,15 @@ export function SliderContinentes() {
           </Link>
         </SwiperSlide>
         <SwiperSlide>
-          <Slide
-            image="asia.jpg"
-            title="Ásia"
-            subtitle="O continente mais populoso do mundo"
-          />
+          <Link href="/asia">
+            <a>
+              <Slide
+                image="asia.jpg"
+                title="Ásia"
+                subtitle="O continente mais populoso do mundo"
+              />
+            </a>
+          </Link>
         </SwiperSlide>
         <SwiperSlide>
           <Link href="/oceania">
