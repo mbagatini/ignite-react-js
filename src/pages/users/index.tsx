@@ -35,23 +35,29 @@ export default function UserList() {
   /**
    * Carrega os dados em cache com a lib useQuery
    */
-  const { data, isLoading, error } = useQuery("users", async () => {
-    const response = await fetch("http://localhost:3000/api/users");
-    const result = await response.json();
+  const { data, isLoading, error } = useQuery(
+    "users",
+    async () => {
+      const response = await fetch("http://localhost:3000/api/users");
+      const result = await response.json();
 
-    const users = result.users.map((user: User) => {
-      const formattedDate = new Intl.DateTimeFormat("pt-BR", {
-        dateStyle: "medium",
-      }).format(new Date(user.createdAt));
+      const users = result.users.map((user: User) => {
+        const formattedDate = new Intl.DateTimeFormat("pt-BR", {
+          dateStyle: "medium",
+        }).format(new Date(user.createdAt));
 
-      return {
-        ...user,
-        createdAt: formattedDate,
-      };
-    });
+        return {
+          ...user,
+          createdAt: formattedDate,
+        };
+      });
 
-    return users;
-  });
+      return users;
+    },
+    {
+      staleTime: 1000 * 60, // 1 minute
+    }
+  );
 
   return (
     <Box>
