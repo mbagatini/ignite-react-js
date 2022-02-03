@@ -26,7 +26,7 @@ import { Sidebar } from "../../components/Sidebar";
 interface User {
   name: string;
   email: string;
-  createdAt: Date;
+  createdAt: string;
 }
 
 export default function UserList() {
@@ -38,7 +38,19 @@ export default function UserList() {
   const { data, isLoading, error } = useQuery("users", async () => {
     const response = await fetch("http://localhost:3000/api/users");
     const result = await response.json();
-    return result;
+
+    const users = result.users.map((user: User) => {
+      const formattedDate = new Intl.DateTimeFormat("pt-BR", {
+        dateStyle: "medium",
+      }).format(new Date(user.createdAt));
+
+      return {
+        ...user,
+        createdAt: formattedDate,
+      };
+    });
+
+    return users;
   });
 
   return (
@@ -91,7 +103,7 @@ export default function UserList() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {data.users.map((user: User, idx: number) => {
+                  {data.map((user: User, idx: number) => {
                     return (
                       <Tr key={idx}>
                         <Td px={["4", "4", "6"]}>
@@ -105,13 +117,7 @@ export default function UserList() {
                             </Text>
                           </Box>
                         </Td>
-                        {isLarge && (
-                          <Td>
-                            {new Intl.DateTimeFormat("pt-BR", {
-                              dateStyle: "medium",
-                            }).format(new Date(user.createdAt))}
-                          </Td>
-                        )}
+                        {isLarge && <Td>{user.createdAt}</Td>}
                       </Tr>
                     );
                   })}
