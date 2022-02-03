@@ -13,9 +13,10 @@ import {
   Thead,
   Tr,
   useBreakpointValue,
+  Spinner,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import { RiAddLine } from "react-icons/ri";
 
 import { Header } from "../../components/Header";
@@ -30,13 +31,15 @@ interface User {
 
 export default function UserList() {
   const isLarge = useBreakpointValue({ base: false, lg: true });
-  const [users, setUsers] = useState([] as User[]);
 
-  useEffect(() => {
-    fetch("http://localhost:3000/api/users")
-      .then((response) => response.json())
-      .then((result) => setUsers(result.users));
-  }, []);
+  /**
+   * Carrega os dados em cache com a lib useQuery
+   */
+  const { data, isLoading, error } = useQuery("users", async () => {
+    const response = await fetch("http://localhost:3000/api/users");
+    const result = await response.json();
+    return result;
+  });
 
   return (
     <Box>
@@ -64,45 +67,60 @@ export default function UserList() {
             </Link>
           </Flex>
 
-          <Table colorScheme="whiteAlpha">
-            <Thead>
-              <Tr>
-                <Th px={["4", "4", "6"]} color="gray.300" w="8">
-                  <Checkbox colorScheme="pink" />
-                </Th>
-                <Th>User</Th>
-                {isLarge && <Th>Created at</Th>}
-              </Tr>
-            </Thead>
-            <Tbody>
-              {users.map((user, idx) => {
-                return (
-                  <Tr key={idx}>
-                    <Td px={["4", "4", "6"]}>
+          {isLoading ? (
+            // Carregando
+            <Flex justify="center">
+              <Spinner />
+            </Flex>
+          ) : error ? (
+            // Erro
+            <Flex justify="center">
+              <Text>Ops... Não foi possível carregar os dados.</Text>
+            </Flex>
+          ) : (
+            // Dados
+            <>
+              <Table colorScheme="whiteAlpha">
+                <Thead>
+                  <Tr>
+                    <Th px={["4", "4", "6"]} color="gray.300" w="8">
                       <Checkbox colorScheme="pink" />
-                    </Td>
-                    <Td>
-                      <Box>
-                        <Text fontWeight="bold">{user.name}</Text>
-                        <Text fontSize="sm" color="gray.300">
-                          {user.email}
-                        </Text>
-                      </Box>
-                    </Td>
-                    {isLarge && (
-                      <Td>
-                        {new Intl.DateTimeFormat("pt-BR", {
-                          dateStyle: "medium",
-                        }).format(new Date(user.createdAt))}
-                      </Td>
-                    )}
+                    </Th>
+                    <Th>User</Th>
+                    {isLarge && <Th>Created at</Th>}
                   </Tr>
-                );
-              })}
-            </Tbody>
-          </Table>
+                </Thead>
+                <Tbody>
+                  {data.users.map((user: User, idx: number) => {
+                    return (
+                      <Tr key={idx}>
+                        <Td px={["4", "4", "6"]}>
+                          <Checkbox colorScheme="pink" />
+                        </Td>
+                        <Td>
+                          <Box>
+                            <Text fontWeight="bold">{user.name}</Text>
+                            <Text fontSize="sm" color="gray.300">
+                              {user.email}
+                            </Text>
+                          </Box>
+                        </Td>
+                        {isLarge && (
+                          <Td>
+                            {new Intl.DateTimeFormat("pt-BR", {
+                              dateStyle: "medium",
+                            }).format(new Date(user.createdAt))}
+                          </Td>
+                        )}
+                      </Tr>
+                    );
+                  })}
+                </Tbody>
+              </Table>
 
-          <Pagination />
+              <Pagination />
+            </>
+          )}
         </Box>
       </Flex>
     </Box>
