@@ -22,6 +22,7 @@ import { RiAddLine } from "react-icons/ri";
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
+import { api } from "../../services/api";
 
 interface User {
   name: string;
@@ -38,10 +39,9 @@ export default function UserList() {
   const { data, isLoading, isFetching, error } = useQuery(
     "users",
     async () => {
-      const response = await fetch("http://localhost:3000/api/users");
-      const result = await response.json();
+      const { data } = await api.get("users");
 
-      const users = result.users.map((user: User) => {
+      const users = data.users.map((user: User) => {
         const formattedDate = new Intl.DateTimeFormat("pt-BR", {
           dateStyle: "medium",
         }).format(new Date(user.createdAt));
