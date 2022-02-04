@@ -22,13 +22,7 @@ import { RiAddLine } from "react-icons/ri";
 import { Header } from "../../components/Header";
 import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
-import { api } from "../../services/api";
-
-interface User {
-  name: string;
-  email: string;
-  createdAt: string;
-}
+import { useUsers } from "../../hooks/useUsers";
 
 export default function UserList() {
   const isLarge = useBreakpointValue({ base: false, lg: true });
@@ -36,28 +30,7 @@ export default function UserList() {
   /**
    * Carrega os dados em cache com a lib useQuery
    */
-  const { data, isLoading, isFetching, error } = useQuery(
-    "users",
-    async () => {
-      const { data } = await api.get("users");
-
-      const users = data.users.map((user: User) => {
-        const formattedDate = new Intl.DateTimeFormat("pt-BR", {
-          dateStyle: "medium",
-        }).format(new Date(user.createdAt));
-
-        return {
-          ...user,
-          createdAt: formattedDate,
-        };
-      });
-
-      return users;
-    },
-    {
-      staleTime: 1000 * 60, // 1 minute
-    }
-  );
+  const { data, isLoading, isFetching, error } = useUsers();
 
   return (
     <Box>
@@ -112,7 +85,7 @@ export default function UserList() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {data.map((user: User, idx: number) => {
+                  {data?.map((user, idx) => {
                     return (
                       <Tr key={idx}>
                         <Td px={["4", "4", "6"]}>
