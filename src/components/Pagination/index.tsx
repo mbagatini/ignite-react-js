@@ -3,8 +3,8 @@ import { Page } from "./Page";
 
 interface PaginationProps {
   totalNumberOfRegisters: number;
-  registersPerPage: number;
-  currentPage: number;
+  registersPerPage?: number;
+  currentPage?: number;
   onPageChange: (page: number) => void;
 }
 
@@ -64,7 +64,7 @@ export function Pagination({
       <HStack spacing="2">
         {currentPage > siblingsCount + 1 && (
           <>
-            <Page>1</Page>
+            <Page onPageChange={onPageChange}>1</Page>
             {currentPage > siblingsCount + 2 && (
               <Text color="gray.300" w="8" textAlign="center">
                 ...
@@ -77,7 +77,7 @@ export function Pagination({
           <Page
             key={page}
             isCurrent={page === currentPage}
-            // onClick={onPageChange}
+            onPageChange={onPageChange}
           >
             {String(page)}
           </Page>
@@ -90,7 +90,7 @@ export function Pagination({
                 ...
               </Text>
             )}
-            <Page>{String(lastPage)}</Page>
+            <Page onPageChange={onPageChange}>{String(lastPage)}</Page>
           </>
         )}
       </HStack>

@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   Box,
   Button,
@@ -16,7 +17,6 @@ import {
   Spinner,
 } from "@chakra-ui/react";
 import Link from "next/link";
-import { useQuery } from "react-query";
 import { RiAddLine } from "react-icons/ri";
 
 import { Header } from "../../components/Header";
@@ -24,13 +24,24 @@ import { Pagination } from "../../components/Pagination";
 import { Sidebar } from "../../components/Sidebar";
 import { useUsers } from "../../hooks/useUsers";
 
+type UsersDTO = {
+  users: {
+    name: string;
+    email: string;
+    createdAt: string;
+  }[];
+  totalCount: number;
+};
+
 export default function UserList() {
   const isLarge = useBreakpointValue({ base: false, lg: true });
+  const [page, setPage] = useState(1);
 
   /**
    * Carrega os dados em cache com a lib useQuery
    */
-  const { data, isLoading, isFetching, error } = useUsers();
+  const { data, isLoading, isFetching, error } = useUsers(page);
+  const { users, totalCount } = (data || {}) as UsersDTO;
 
   return (
     <Box>
@@ -85,7 +96,7 @@ export default function UserList() {
                   </Tr>
                 </Thead>
                 <Tbody>
-                  {data?.map((user, idx) => {
+                  {users.map((user, idx) => {
                     return (
                       <Tr key={idx}>
                         <Td px={["4", "4", "6"]}>
@@ -106,7 +117,11 @@ export default function UserList() {
                 </Tbody>
               </Table>
 
-              <Pagination totalNumberOfRegisters={50} currentPage={4} />
+              <Pagination
+                totalNumberOfRegisters={totalCount}
+                currentPage={page}
+                onPageChange={setPage}
+              />
             </>
           )}
         </Box>

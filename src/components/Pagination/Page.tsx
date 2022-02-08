@@ -3,9 +3,15 @@ import { Button, ButtonProps as ChakraButtonProps } from "@chakra-ui/react";
 interface PageProps extends ChakraButtonProps {
   children: string;
   isCurrent?: boolean;
+  onPageChange: (page: number) => void;
 }
 
-export function Page({ isCurrent, children, ...rest }: PageProps) {
+export function Page({
+  isCurrent,
+  children,
+  onPageChange,
+  ...rest
+}: PageProps) {
   if (isCurrent) {
     return (
       <Button
@@ -34,6 +40,7 @@ export function Page({ isCurrent, children, ...rest }: PageProps) {
       _hover={{
         bg: "gray.500",
       }}
+      onClick={() => onPageChange(Number(children))}
       {...rest}
     >
       {children}
