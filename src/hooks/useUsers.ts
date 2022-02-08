@@ -5,7 +5,7 @@ type User = {
   id: number;
   name: string;
   email: string;
-  createdAt: string;
+  created_at: string;
 };
 
 type GetUserResponse = {
@@ -21,7 +21,7 @@ async function getUsers(page: number): Promise<GetUserResponse> {
   const users = data.users.map((user: any) => {
     const formattedDate = new Intl.DateTimeFormat("pt-BR", {
       dateStyle: "medium",
-    }).format(new Date(user.createdAt));
+    }).format(new Date(user.created_at));
 
     return {
       ...user,
