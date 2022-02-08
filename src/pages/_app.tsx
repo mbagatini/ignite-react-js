@@ -1,11 +1,12 @@
 import type { AppProps } from "next/app";
 import { ChakraProvider } from "@chakra-ui/react";
-import { QueryClientProvider, QueryClient } from "react-query";
+import { QueryClientProvider } from "react-query";
 import { ReactQueryDevtools } from "react-query/devtools";
 
 import { theme } from "../styles/theme";
 import { SidebarDrawerProvider } from "../hooks/useSidebarDrawer";
 import { initServer } from "../services/mirage";
+import { queryClient } from "../services/queryClient";
 
 /**
  * Inicia o serivço do MirageJS
@@ -13,8 +14,6 @@ import { initServer } from "../services/mirage";
 if (process.env.NODE_ENV === "development") {
   initServer();
 }
-
-const queryClient = new QueryClient();
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (

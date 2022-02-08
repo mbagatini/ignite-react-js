@@ -2,6 +2,7 @@ import { createServer, Factory, Model, Response } from "miragejs";
 import { faker } from "@faker-js/faker";
 
 type User = {
+  id: number;
   name: string;
   email: string;
   createdAt: Date;
@@ -15,6 +16,7 @@ export function initServer() {
 
     factories: {
       user: Factory.extend({
+        id: () => faker.datatype.number(),
         name: () => faker.name.findName(),
         email: () => faker.internet.email(),
         createdAt: () => faker.date.recent(30),
@@ -47,6 +49,7 @@ export function initServer() {
         );
       });
 
+      this.get("/users/:id");
       this.post("/users");
 
       // reseta as rotas padrão para não conflitar com o Next
