@@ -1,3 +1,4 @@
+import { useMutation } from "react-query";
 import {
   Box,
   Button,
@@ -9,9 +10,13 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as yup from "yup";
+
+import { api } from "../../services/api";
+import { queryClient } from "../../services/queryClient";
 
 import { Header } from "../../components/Header";
 import { Sidebar } from "../../components/Sidebar";
@@ -38,13 +43,38 @@ const signUpSchema = yup
   .required();
 
 export default function CreateUser() {
+  const router = useRouter();
+
   const { register, handleSubmit, formState } = useForm<SignUpFormData>({
     resolver: yupResolver(signUpSchema),
   });
 
-  const handleSignUp: SubmitHandler<SignUpFormData> = (inputs, event) => {};
-
   const { errors } = formState;
+
+  /**
+   * Hook de mutation para criação de usuário
+   */
+  const createUser = useMutation(
+    async (user: SignUpFormData) => {
+      const response = await api.post("users", {
+        user: {
+          ...user,
+          created_at: new Date(),
+        },
+      });
+    },
+    {
+      // Se cadastrado com sucesso, invalida o cache que armazena os usuários
+      onSuccess: async () => {
+        await queryClient.invalidateQueries("users");
+        router.push("/users");
+      },
+    }
+  );
+
+  const handleSignUp: SubmitHandler<SignUpFormData> = async (inputs) => {
+    await createUser.mutateAsync(inputs);
+  };
 
   return (
     <Box>
