@@ -56,7 +56,9 @@ export function AuthProvider({ children }: AuthProviderProps) {
       const response = await api.post("sessions", { email, password });
       const { token, refreshToken, permissions, roles } = response.data;
 
-      // Salva os dados do usuário em um cookie
+      /**
+       * Salva os dados do token em cookies
+       */
       setCookie(undefined, "nextauth.token", token, {
         maxAge: 30 * 24 * 60 * 60, // 30 dias
         path: "/", // Caminhos com acesso ao cookie
@@ -67,6 +69,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         path: "/", // Caminhos com acesso ao cookie
       });
 
+      // Salva os dados do usuário recém logado
       setUser({
         email,
         permissions,
