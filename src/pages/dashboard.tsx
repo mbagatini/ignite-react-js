@@ -15,5 +15,5 @@ export default function Dashboard() {
     return <p>Você precisa estar logado para acessar o dashboard</p>;
   }
 
-  return <h2>this is the dashboard, welcome</h2>;
+  return <h2>this is the dashboard, welcome {user.email}</h2>;
 }
