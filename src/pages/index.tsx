@@ -19,7 +19,10 @@ export default function Home() {
   }
 
   return (
-    <form className={styles.container} onSubmit={handleSubmit}>
+    <form
+      className={`${styles.container} ${styles.main}`}
+      onSubmit={handleSubmit}
+    >
       <input
         type="email"
         value={email}
