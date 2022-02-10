@@ -1,19 +1,14 @@
-import Router from "next/router";
+import { useEffect } from "react";
 
-import { useAuth } from "../hooks/useAuth";
+import { logout, useAuth } from "../hooks/useAuth";
+import { api } from "../services/api";
 
 export default function Dashboard() {
-  const { isAuthenticated, user } = useAuth();
+  const { user } = useAuth();
 
-  if (!isAuthenticated) {
-    new Promise(() =>
-      setTimeout(() => {
-        Router.push("/");
-      }, 1000 * 3)
-    );
+  useEffect(() => {
+    api.get("/me").catch((error) => logout);
+  }, []);
 
-    return <p>Você precisa estar logado para acessar o dashboard</p>;
-  }
-
-  return <h2>this is the dashboard, welcome {user.email}</h2>;
+  return <h2>Welcome {user.email}</h2>;
 }
