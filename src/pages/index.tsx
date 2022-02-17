@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { GetServerSideProps } from "next";
+import { parseCookies } from "nookies";
+
 import styles from "../styles/Home.module.css";
 import { useAuth } from "../hooks/useAuth";
 
@@ -37,3 +40,23 @@ export default function Home() {
     </form>
   );
 }
+
+export const getServerSideProps: GetServerSideProps = async (context) => {
+  const cookies = parseCookies(context);
+
+  /**
+   * Redireciona o usuário para o dashboard quando ele já estiver autenticado
+   */
+  if (cookies["nextauth.token"]) {
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {},
+  };
+};
