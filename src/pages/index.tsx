@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { GetServerSideProps } from "next";
-import { parseCookies } from "nookies";
 
 import styles from "../styles/Home.module.css";
 import { useAuth } from "../hooks/useAuth";
+import { checkSSRGuest } from "../utils/checkSSRGuest";
 
 export default function Home() {
   const [email, setEmail] = useState("");
@@ -41,22 +41,10 @@ export default function Home() {
   );
 }
 
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const cookies = parseCookies(context);
-
-  /**
-   * Redireciona o usuário para o dashboard quando ele já estiver autenticado
-   */
-  if (cookies["nextauth.token"]) {
+export const getServerSideProps: GetServerSideProps = checkSSRGuest(
+  async () => {
     return {
-      redirect: {
-        destination: "/dashboard",
-        permanent: false,
-      },
+      props: {},
     };
   }
-
-  return {
-    props: {},
-  };
-};
+);
