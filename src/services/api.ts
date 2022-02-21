@@ -19,16 +19,25 @@ let failedRequests = [] as FailedRequest[];
  * consiga trabalhar com os cookies corretamente
  */
 export function setupAPIClient(
-  context: GetServerSidePropsContext | undefined = undefined
+  context: GetServerSidePropsContext = undefined as any
 ) {
   let cookies = parseCookies(context);
 
+  /**
+   * O Authorization default no header não funciona!!!
+   * axios.create({
+   *  headers: {
+   *   Authorization: `Bearer ${cookies.token}`
+   *   }
+   * })
+   */
   const api = axios.create({
     baseURL: "http://localhost:3333",
-    headers: {
-      Authorization: `Bearer ${cookies["nextauth.token"]}`,
-    },
   });
+
+  api.defaults.headers.common[
+    "Authorization"
+  ] = `Bearer ${cookies["nextauth.token"]}`;
 
   /**
    * Intercepta o response para verificar se o token foi
@@ -129,6 +138,7 @@ export function setupAPIClient(
        * Atualiza os headers da api para salvar o token
        */
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+      console.log("refresh ", api.defaults.headers.common);
 
       return Promise.resolve({ token });
     });
