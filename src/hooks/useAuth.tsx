@@ -1,6 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import { GetServerSidePropsContext } from "next";
 import Router from "next/router";
 import { setCookie, parseCookies, destroyCookie } from "nookies";
+
 import { api } from "../services/apiClient";
 
 interface User {
@@ -25,10 +27,15 @@ interface AuthProviderProps {
 }
 
 export function logout() {
-  destroyCookie(undefined, "nextauth.token");
-  destroyCookie(undefined, "nextauth.refreshToken");
-
+  clearCookies();
   Router.push("/");
+}
+
+export function clearCookies(
+  context: GetServerSidePropsContext | undefined = undefined
+) {
+  destroyCookie(context, "nextauth.token");
+  destroyCookie(context, "nextauth.refreshToken");
 }
 
 // Contexto

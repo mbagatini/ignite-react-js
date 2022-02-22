@@ -10,23 +10,21 @@ export default function Dashboard() {
   const { user } = useAuth();
 
   useEffect(() => {
-    api.get("/me");
+    api.get("/me").catch((error) => console.warn(error));
   }, []);
 
   return <h2>Welcome {user.email}</h2>;
 }
 
-export const getServerSideProps: GetServerSideProps = checkSSRAuth(
-  async (context) => {
-    /**
-     * Teste requisição a API com SSR e contexto
-     */
-    const apiClientSSR = setupAPIClient(context);
-    const response = await apiClientSSR.get("/me");
-    console.log("SSR ", response.data);
+export const getServerSideProps = checkSSRAuth(async (context) => {
+  /**
+   * Teste requisição a API com SSR e contexto
+   */
+  const apiClientSSR = setupAPIClient(context);
+  const response = await apiClientSSR.get("/me");
+  console.log("SSR ", response.data);
 
-    return {
-      props: {},
-    };
-  }
-);
+  return {
+    props: {},
+  };
+});

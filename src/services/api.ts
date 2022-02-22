@@ -1,7 +1,9 @@
 import axios, { AxiosError } from "axios";
 import { GetServerSidePropsContext } from "next";
 import { parseCookies, setCookie } from "nookies";
+
 import { logout } from "../hooks/useAuth";
+import { AuthError } from "./errors/AuthError";
 
 type FailedRequest = {
   onSuccess: (token: string) => void;
@@ -23,18 +25,12 @@ export function setupAPIClient(
 ) {
   let cookies = parseCookies(context);
 
-  /**
-   * O Authorization default no header não funciona!!!
-   * axios.create({
-   *  headers: {
-   *   Authorization: `Bearer ${cookies.token}`
-   *   }
-   * })
-   */
   const api = axios.create({
     baseURL: "http://localhost:3333",
   });
 
+  // Alter defaults after instance has been created
+  // O Authorization default no create instance não funciona!!!
   api.defaults.headers.common[
     "Authorization"
   ] = `Bearer ${cookies["nextauth.token"]}`;
@@ -101,6 +97,8 @@ export function setupAPIClient(
         } else {
           if (typeof window === "object") {
             logout();
+          } else {
+            return Promise.reject(new AuthError());
           }
         }
       }
@@ -138,7 +136,6 @@ export function setupAPIClient(
        * Atualiza os headers da api para salvar o token
        */
       api.defaults.headers.common["Authorization"] = `Bearer ${token}`;
-      console.log("refresh ", api.defaults.headers.common);
 
       return Promise.resolve({ token });
     });

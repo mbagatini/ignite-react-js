@@ -5,6 +5,9 @@ import {
 } from "next";
 import { parseCookies } from "nookies";
 
+import { clearCookies } from "../hooks/useAuth";
+import { AuthError } from "../services/errors/AuthError";
+
 /**
  * o T é a tipagem da função e é por causa dele que o typescript
  * consegue sugerir as propriedades do retorno
@@ -12,7 +15,7 @@ import { parseCookies } from "nookies";
 export function checkSSRAuth<T>(callback: GetServerSideProps<T>) {
   return async (
     context: GetServerSidePropsContext
-  ): Promise<GetServerSidePropsResult<T>> => {
+  ): Promise<GetServerSidePropsResult<T> | undefined> => {
     const cookies = parseCookies(context);
 
     /**
@@ -27,6 +30,20 @@ export function checkSSRAuth<T>(callback: GetServerSideProps<T>) {
       };
     }
 
-    return await callback(context);
+    try {
+      return await callback(context);
+    } catch (error) {
+      if (error instanceof AuthError) {
+        // Limpa os dados de autenticação
+        clearCookies(context);
+
+        return {
+          redirect: {
+            destination: "/",
+            permanent: false,
+          },
+        };
+      }
+    }
   };
 }
