@@ -6,6 +6,7 @@ import { useCan } from "../hooks/useCan";
 import { setupAPIClient } from "../services/api";
 import { api } from "../services/apiClient";
 import { checkSSRAuth } from "../utils/checkSSRAuth";
+import { Can } from "../components/Can";
 
 export default function Dashboard() {
   const { user } = useAuth();
@@ -23,6 +24,10 @@ export default function Dashboard() {
     <div>
       <h2>Welcome {user.email}</h2>
       {userCanSeeMetrics && <h3>Métricas</h3>}
+
+      <Can permissions={["users.list"]}>
+        <h3>Listagem de usuários</h3>
+      </Can>
     </div>
   );
 }
