@@ -39,8 +39,8 @@ Depois de clonar o repositório da aplicação, execute o comando abaixo para qu
 yarn install
 ```
 
-Para iniciar a aplicação, execute:
+Para iniciar a aplicação backend e a aplicação frontend, execute:
+
 ```bash
 yarn dev
 ```
-
