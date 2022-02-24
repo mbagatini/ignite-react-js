@@ -1,4 +1,3 @@
-import { GetServerSideProps } from "next";
 import { useEffect } from "react";
 
 import { useAuth } from "../hooks/useAuth";
