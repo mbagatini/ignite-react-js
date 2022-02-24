@@ -9,7 +9,7 @@ import { checkSSRAuth } from "../utils/checkSSRAuth";
 import { Can } from "../components/Can";
 
 export default function Dashboard() {
-  const { user } = useAuth();
+  const { user, signOut } = useAuth();
 
   const userCanSeeMetrics = useCan({
     permissions: ["metrics.list"],
@@ -23,6 +23,8 @@ export default function Dashboard() {
   return (
     <div>
       <h2>Welcome {user.email}</h2>
+      <button onClick={signOut}>Sign out</button>
+
       {userCanSeeMetrics && <h3>Métricas</h3>}
 
       <Can permissions={["users.list"]}>

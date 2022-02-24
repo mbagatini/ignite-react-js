@@ -2,7 +2,7 @@ import axios, { AxiosError } from "axios";
 import { GetServerSidePropsContext } from "next";
 import { parseCookies, setCookie } from "nookies";
 
-import { logout } from "../hooks/useAuth";
+import { signOut } from "../hooks/useAuth";
 import { AuthError } from "./errors/AuthError";
 
 type FailedRequest = {
@@ -96,7 +96,7 @@ export function setupAPIClient(
           });
         } else {
           if (typeof window === "object") {
-            logout();
+            signOut();
           } else {
             return Promise.reject(new AuthError());
           }

@@ -17,7 +17,8 @@ interface SignInCredentials {
 }
 
 interface AuthContextData {
-  signIn(credentials: SignInCredentials): Promise<void>;
+  signIn: (credentials: SignInCredentials) => Promise<void>;
+  signOut: () => void;
   isAuthenticated: boolean;
   user: User;
 }
@@ -26,8 +27,13 @@ interface AuthProviderProps {
   children: React.ReactNode;
 }
 
-export function logout() {
+let authBroadcastChannel: BroadcastChannel;
+
+export function signOut() {
   clearCookies();
+
+  authBroadcastChannel.postMessage("signOut");
+
   Router.push("/");
 }
 
@@ -45,6 +51,20 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User>({} as User);
   const isAuthenticated = !!user;
+
+  /**
+   * BroadcastChannel - controla se o usuário deslogou de uma aba e
+   * desloga em todas abas abertas
+   */
+  useEffect(() => {
+    authBroadcastChannel = new BroadcastChannel("auth");
+
+    authBroadcastChannel.onmessage = (event) => {
+      if (event.data === "signOut") {
+        signOut();
+      }
+    };
+  }, []);
 
   /**
    * Carrega os dados do usuário somente quando ele realizar o primeiro acesso
@@ -65,7 +85,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           });
         })
         .catch((error) => {
-          logout();
+          signOut();
         });
     }
   }, []);
@@ -105,7 +125,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, user, signIn }}>
+    <AuthContext.Provider value={{ isAuthenticated, user, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );
