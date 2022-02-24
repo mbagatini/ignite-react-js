@@ -13,8 +13,34 @@
 </p>
 
 # 💻 Sobre o projeto
-Essa é uma aplicação para treinar e revisar os conceitos aprendidos sobre autenticação, envolvendo tanto client side como server side.
+Essa é uma aplicação para treinar e revisar os conceitos aprendidos sobre autenticação, envolvendo tanto client side como server side. Este projeto foi criado com Next.js
+
+São abordados seguintes temas:
+
+  - Verificar autenticação via client side e SSR
+  - Default headers com axios
+  - Refresh do token JWT
+  - Verificações de permissões e papéis via client side e SSR
+  - Redirecionamento automático de rotas
+  - Cookies no SSR
+  - BroadcastChannel
 
 # Backend do projeto
 
+Realizar o clone do repositório abaixo, que serve como beckend para o projeto atual.
+
 https://github.com/rocketseat-education/ignite-reactjs-auth-backend
+
+# Como executar o projeto
+
+Depois de clonar o repositório da aplicação, execute o comando abaixo para que todas dependências sejam instaladas:
+
+```bash
+yarn install
+```
+
+Para iniciar a aplicação, execute:
+```bash
+yarn dev
+```
+
