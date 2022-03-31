@@ -1,5 +1,5 @@
 import { Button, Box } from '@chakra-ui/react';
-import { useMemo } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import { useInfiniteQuery } from 'react-query';
 
 import { Header } from '../components/Header';
@@ -39,6 +39,33 @@ export default function Home(): JSX.Element {
     return data?.pages.map(v => v.data.data).flat();
   }, [data]);
 
+  // INFINITE SCROLL
+  const loaderRef = useRef(null);
+
+  // handle what happens when user scrolls to Load More button
+  const handleObserver = (entities: IntersectionObserverEntry[]): void => {
+    const target = entities[0];
+
+    if (target.isIntersecting && hasNextPage && !isFetchingNextPage) {
+      fetchNextPage();
+    }
+  };
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '0px',
+      threshold: 1.0,
+    };
+
+    // initialize IntersectionObserver and attaching to Load More button
+    const observer = new IntersectionObserver(handleObserver, options);
+
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+  });
+
   // TODO RENDER LOADING SCREEN
   if (isLoading) {
     return <Loading />;
@@ -58,9 +85,14 @@ export default function Home(): JSX.Element {
 
         {/* TODO RENDER LOAD MORE BUTTON IF DATA HAS NEXT PAGE */}
         {hasNextPage && (
-          <Button mt={12} justifySelf="center" onClick={() => fetchNextPage()}>
+          <Button mt={12} ref={loaderRef}>
             {isFetchingNextPage ? 'Carregando...' : 'Carregar mais'}
           </Button>
+
+          // using just the button, without infinite scroll
+          // <Button mt={12} onClick={() => fetchNextPage()}>
+          //   {isFetchingNextPage ? 'Carregando...' : 'Carregar mais'}
+          // </Button>
         )}
       </Box>
     </>
