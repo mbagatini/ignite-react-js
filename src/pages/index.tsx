@@ -9,7 +9,7 @@ import { Loading } from '../components/Loading';
 import { Error } from '../components/Error';
 
 function getImages(pageParam = null): Promise<any> {
-  return api.get('/images', {
+  return api.get('/api/images', {
     params: {
       after: pageParam,
     },
