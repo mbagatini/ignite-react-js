@@ -4,7 +4,7 @@ type Product = {
   price: number;
 };
 
-interface AddToWishListProps {
+export interface AddToWishListProps {
   product: Product;
   addToWishList: (productId: number) => void;
   onRequestClose: () => void;

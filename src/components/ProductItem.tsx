@@ -1,7 +1,14 @@
 import { memo, useState } from "react";
+import dynamic from "next/dynamic";
 
 import styles from "../styles/Home.module.css";
-import { AddToWishList } from "./AddToWishList";
+import { AddToWishListProps } from "./AddToWishList";
+
+// Lazy load
+const AddToWishList = dynamic<AddToWishListProps>(
+  () => import("./AddToWishList").then((mod) => mod.AddToWishList),
+  { loading: () => <div>Loading...</div> }
+);
 
 type Product = {
   id: number;
