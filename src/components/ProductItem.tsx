@@ -6,6 +6,7 @@ type Product = {
   id: number;
   name: string;
   price: number;
+  priceFormatted: string;
 };
 
 interface ProductItemProps {
@@ -16,7 +17,7 @@ function ProductItemComponent({ data: product }: ProductItemProps) {
   return (
     <div className={styles.card}>
       <h3>{product.name}</h3>
-      <p>{product.price}</p>
+      <small>{product.priceFormatted}</small>
     </div>
   );
 }

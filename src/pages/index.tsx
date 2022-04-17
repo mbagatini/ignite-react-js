@@ -5,6 +5,12 @@ import { SearchResults } from "../components/SearchResults";
 
 import styles from "../styles/Home.module.css";
 
+type Product = {
+  id: number;
+  name: string;
+  price: number;
+};
+
 const Home: NextPage = () => {
   const [filter, setFilter] = useState("");
   const [results, setResults] = useState([]);
@@ -17,7 +23,20 @@ const Home: NextPage = () => {
     const response = await fetch(`http://localhost:3333/products?q=${filter}`);
     const data = await response.json();
 
-    setResults(data);
+    const formatter = new Intl.NumberFormat("us-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 0,
+    });
+
+    const products = data.map((product: Product) => {
+      return {
+        ...product,
+        priceFormatted: formatter.format(product.price),
+      };
+    });
+
+    setResults(products);
   }
 
   return (

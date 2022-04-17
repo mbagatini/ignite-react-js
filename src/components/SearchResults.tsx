@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useCallback, useMemo } from "react";
 import styles from "../styles/Home.module.css";
 import { ProductItem } from "./ProductItem";
 
@@ -6,6 +6,7 @@ type Product = {
   id: number;
   name: string;
   price: number;
+  priceFormatted: string;
 };
 
 interface SearchResultsProps {
@@ -26,6 +27,11 @@ export function SearchResults({ results }: SearchResultsProps) {
     }).format(total);
   }, [results]);
 
+  // example of useCallback
+  const addToWishList = useCallback(() => {
+    // todo
+  }, []);
+
   return (
     <>
       <div>
@@ -34,7 +40,11 @@ export function SearchResults({ results }: SearchResultsProps) {
 
       <div className={styles.grid}>
         {results.map((product: Product) => (
-          <ProductItem key={product.id} data={product} />
+          <ProductItem
+            key={product.id}
+            data={product}
+            // addToWishList={addToWishList}
+          />
         ))}
       </div>
     </>
