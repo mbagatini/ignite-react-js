@@ -1,7 +1,9 @@
 import type { NextPage } from "next";
 import Head from "next/head";
 import { FormEvent, useState } from "react";
+
 import { SearchResults } from "../components/SearchResults";
+import { SearchResultsVirtualized } from "../components/SearchResultsVirtualized";
 
 import styles from "../styles/Home.module.css";
 
@@ -58,7 +60,8 @@ const Home: NextPage = () => {
           <button type="submit">Buscar</button>
         </form>
 
-        <SearchResults results={results} />
+        {/* <SearchResults results={results} /> */}
+        <SearchResultsVirtualized results={results} />
       </main>
     </div>
   );
