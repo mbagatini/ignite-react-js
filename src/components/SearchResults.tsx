@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import styles from "../styles/Home.module.css";
 import { ProductItem } from "./ProductItem";
 
@@ -12,11 +13,30 @@ interface SearchResultsProps {
 }
 
 export function SearchResults({ results }: SearchResultsProps) {
+  // memoize
+  const totalPrice = useMemo(() => {
+    const total = results.reduce((total, product) => {
+      return total + product.price;
+    }, 0);
+
+    return Intl.NumberFormat("us-US", {
+      style: "currency",
+      currency: "USD",
+      minimumFractionDigits: 0,
+    }).format(total);
+  }, [results]);
+
   return (
-    <div className={styles.grid}>
-      {results.map((product: Product) => (
-        <ProductItem key={product.id} data={product} />
-      ))}
-    </div>
+    <>
+      <div>
+        Total: <strong>{totalPrice}</strong>
+      </div>
+
+      <div className={styles.grid}>
+        {results.map((product: Product) => (
+          <ProductItem key={product.id} data={product} />
+        ))}
+      </div>
+    </>
   );
 }
