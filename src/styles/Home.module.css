@@ -103,6 +103,19 @@
   line-height: 1.5;
 }
 
+.card button {
+	margin-left: 1rem;
+	padding: 0.25rem 0.75rem;
+	border: 0;
+	color: white;
+	background: rgb(133, 180, 221);
+	border-radius: 3px;
+}
+.card button+button {
+	margin-left: 0.5rem;
+	background: rgb(55, 55, 62);
+}
+
 .logo {
   height: 1em;
   margin-left: 0.5rem;

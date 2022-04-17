@@ -1,6 +1,7 @@
-import { memo } from "react";
+import { memo, useState } from "react";
 
 import styles from "../styles/Home.module.css";
+import { AddToWishList } from "./AddToWishList";
 
 type Product = {
   id: number;
@@ -14,10 +15,30 @@ interface ProductItemProps {
 }
 
 function ProductItemComponent({ data: product }: ProductItemProps) {
+  const [isWishList, setIsWishList] = useState(false);
+
+  function addToWishList(id: number) {
+    console.log(`Added to wish list: ${id}`);
+    onRequestClose();
+  }
+
+  function onRequestClose() {
+    setIsWishList(false);
+  }
+
   return (
     <div className={styles.card}>
       <h3>{product.name}</h3>
       <small>{product.priceFormatted}</small>
+      <button onClick={() => setIsWishList(true)}>Wish it!</button>
+
+      {isWishList && (
+        <AddToWishList
+          product={product}
+          onRequestClose={onRequestClose}
+          addToWishList={addToWishList}
+        />
+      )}
     </div>
   );
 }
