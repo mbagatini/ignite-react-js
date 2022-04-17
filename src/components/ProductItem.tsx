@@ -1,3 +1,5 @@
+import { memo } from "react";
+
 import styles from "../styles/Home.module.css";
 
 type Product = {
@@ -10,11 +12,19 @@ interface ProductItemProps {
   data: Product;
 }
 
-export function ProductItem({ data: product }: ProductItemProps) {
+function ProductItemComponent({ data: product }: ProductItemProps) {
   return (
-    <div key={product.id} className={styles.card}>
+    <div className={styles.card}>
       <h3>{product.name}</h3>
       <p>{product.price}</p>
     </div>
   );
 }
+
+export const ProductItem = memo(
+  ProductItemComponent,
+  // Function to check if the props have changed - rerender
+  (prevProps, nextProps) => {
+    return Object.is(prevProps.data, nextProps.data);
+  }
+);
