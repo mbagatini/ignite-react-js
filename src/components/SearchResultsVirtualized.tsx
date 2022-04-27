@@ -1,7 +1,6 @@
 import { useMemo } from "react";
-import { List, AutoSizer, ListRowRenderer } from "react-virtualized";
+import { Grid, GridCellRenderer, ColumnSizer } from "react-virtualized";
 
-import styles from "../styles/Home.module.css";
 import { ProductItem } from "./ProductItem";
 
 type Product = {
@@ -29,8 +28,18 @@ export function SearchResultsVirtualized({ results }: SearchResultsProps) {
     }).format(total);
   }, [results]);
 
+  const columnCount = 3;
+
   // code that renders the items in the list
-  const rowRenderer: ListRowRenderer = ({ index, key, style }) => {
+  const cellRenderer: GridCellRenderer = ({
+    columnIndex,
+    key,
+    rowIndex,
+    style,
+  }) => {
+    const index = columnCount * rowIndex + columnIndex;
+    if (index > results.length - 1) return null;
+
     const product = results[index];
 
     return (
@@ -46,20 +55,21 @@ export function SearchResultsVirtualized({ results }: SearchResultsProps) {
         Total: <strong>{totalPrice}</strong>
       </div>
 
-      <div className={styles.grid}>
-        <AutoSizer>
-          {({ width, height }) => (
-            <List
-              width={width}
-              height={height}
-              rowCount={results.length}
-              rowHeight={20}
-              overscanRowCount={3}
-              rowRenderer={rowRenderer}
-            ></List>
-          )}
-        </AutoSizer>
-      </div>
+      <ColumnSizer columnCount={columnCount} width={1032}>
+        {({ adjustedWidth, getColumnWidth, registerChild }) => (
+          <Grid
+            ref={registerChild}
+            width={adjustedWidth}
+            height={600}
+            columnWidth={getColumnWidth}
+            columnCount={columnCount}
+            rowCount={Math.ceil(results.length / columnCount)}
+            rowHeight={160}
+            overscanRowCount={3}
+            cellRenderer={cellRenderer}
+          ></Grid>
+        )}
+      </ColumnSizer>
     </>
   );
 }
