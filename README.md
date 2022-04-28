@@ -44,6 +44,8 @@ yarn dev
 
 O layout da aplicação foi desenvolvido pelo Tiago Luchtenberg, UI Designer da Rocketseat. 
 
+![image](https://user-images.githubusercontent.com/17517028/165836436-45ecac6e-055c-4efe-a6b6-21206788b04b.png)
+
 
 
 
