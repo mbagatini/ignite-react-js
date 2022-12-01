@@ -1,0 +1,12 @@
+:root {
+  --swiper-theme-color: #ffba08 !important;
+}
+
+span.swiper-pagination-bullet {
+  background-color: #999999;
+  opacity: 1;
+}
+
+span.swiper-pagination-bullet-active {
+  background-color: #ffba08;
+}
