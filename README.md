@@ -18,34 +18,34 @@ All projects developed in classes or tasks in the bootcamp.
 
 ## Chapter I
 
-[Tasklist](https://github.com/mbagatini/01-desafio-tasklist)
+[Tasklist](/01-desafio-tasklist)
 
 ## Chapter II
 
-[Carrinho de compras](https://github.com/mbagatini/02-desafio-carrinho-compras)
+[Carrinho de compras](/02-desafio-carrinho-compras)
 
-[WatchMe - movies](https://github.com/mbagatini/02-desafio-filmes)
+[WatchMe - movies](/02-desafio-filmes)
 
-[GoRestaurant - JS to TS](https://github.com/mbagatini/02-desafio-restaurant-js-to-ts)
+[GoRestaurant - JS to TS](/02-desafio-restaurant-js-to-ts)
 
-[dt money - controle financeiro](https://github.com/mbagatini/02-money)
+[dt money - controle financeiro](/02-money)
 
 ## Chapter III
 
-[Blog - spacetraveling](https://github.com/mbagatini/03-desafio-blog)
+[Blog - spacetraveling](/03-desafio-blog)
 
-[Blog - ig.news](https://github.com/mbagatini/03-ignews)
+[Blog - ig.news](/03-ignews)
 
 ## Chapter IV
 
-[dashgo - dashboard](https://github.com/mbagatini/04-dashgo)
+[dashgo - dashboard](/04-dashgo)
 
-[upfi - images upload](https://github.com/mbagatini/04-desafio-upload-imagens)
+[upfi - images upload](/04-desafio-upload-imagens)
 
-[worldtrip](https://github.com/mbagatini/04-desafio-world-trip)
+[worldtrip](/04-desafio-world-trip)
 
-[nextauth](https://github.com/mbagatini/04-nextauth)
+[nextauth](/04-nextauth)
 
 ## Chapter V
 
-[performance](https://github.com/mbagatini/05-performance)
+[performance](/05-performance)
