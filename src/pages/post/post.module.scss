@@ -1,0 +1,101 @@
+.banner {
+  position: relative;
+  height: 400px;
+}
+
+.post {
+  margin: 5rem auto;
+
+  h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    color: var(--gray-100);
+  }
+
+  .info {
+    margin: 1.5rem 0 4rem;
+    color: var(--gray-300);
+
+    div {
+      display: flex;
+      gap: 1.5rem;
+
+      span {
+        display: flex;
+        align-items: center;
+
+        svg {
+          margin-right: 0.5rem;
+        }
+      }
+    }
+
+    p {
+      font-size: 0.875rem;
+      font-style: italic;
+      margin-top: 1rem;
+    }
+  }
+}
+
+.postContent {
+  h2 {
+    font-size: 2.25rem;
+    font-weight: bold;
+    color: var(--gray-100);
+    padding: 2.25rem 0;
+  }
+
+  p,
+  span {
+    font-size: 1.125rem;
+    line-height: 1.625rem;
+    text-align: justify;
+
+    & + p,
+    span {
+      margin-top: 1.5rem;
+    }
+  }
+
+  a {
+    color: var(--pink-500);
+  }
+}
+
+.postFooter {
+  display: flex;
+  flex-direction: column;
+  gap: 5rem;
+  margin-bottom: 5rem;
+}
+
+.postPagination {
+  hr {
+    border: 1px solid var(--gray-300);
+    opacity: 0.1;
+    margin-bottom: 3rem;
+  }
+
+  .postLinks {
+    display: flex;
+    justify-content: space-between;
+
+    div {
+      p {
+        color: var(--gray-100);
+        font-size: 1.125rem;
+        padding-bottom: 0.5rem;
+      }
+
+      a {
+        color: var(--pink-500);
+        font-weight: 600;
+      }
+
+      &:nth-child(2) {
+        text-align: right;
+      }
+    }
+  }
+}

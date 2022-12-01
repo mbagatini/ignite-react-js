@@ -1,0 +1,17 @@
+.container {
+  max-width: 764px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.preview {
+  width: 100%;
+  padding: 1.5rem;
+  margin-top: 2rem;
+  text-align: center;
+  font-size: 1.125rem;
+  font-weight: 600;
+  color: var(--gray-900);
+  background: var(--gray-100);
+  border-radius: 4px;
+}
